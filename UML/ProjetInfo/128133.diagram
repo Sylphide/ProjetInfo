@@ -1,0 +1,123 @@
+format 76
+
+classcanvas 128005 class_ref 128005 // Player
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 65 135 2000
+end
+usecasecanvas 128133 usecase_ref 128005 // LogOnPlayer
+  xyzwh 155 1 3005 83 33 label_xy 166 9
+end
+usecasecanvas 128261 usecase_ref 128773 // CreateNewPlayer
+  xyzwh 194 32 3005 97 37 label_xy 200 41
+end
+usecasecanvas 128389 usecase_ref 128901 // DeletePlayer
+  xyzwh 438 44 3005 73 33 label_xy 445 53
+end
+usecasecanvas 128517 usecase_ref 129029 // EditPlayer
+  xyzwh 400 4 3005 69 33 label_xy 411 13
+end
+usecasecanvas 128645 usecase_ref 129157 // BuyPoints
+  xyzwh 213 324 3010 85 33 label_xy 233 331
+end
+usecasecanvas 128773 usecase_ref 129285 // DisplayTransactions
+  xyzwh 232 285 3005 109 35 label_xy 239 294
+end
+usecasecanvas 128901 usecase_ref 129413 // BrowseTable
+  xyzwh 260 143 3005 77 33 label_xy 267 151
+end
+usecasecanvas 129029 usecase_ref 129541 // JoinTable
+  xyzwh 235 210 3005 85 33 label_xy 255 218
+end
+usecasecanvas 129157 usecase_ref 129669 // LeaveTable
+  xyzwh 241 176 3010 77 33 label_xy 251 184
+end
+usecasecanvas 129285 usecase_ref 129797 // CreateTable
+  xyzwh 276 108 3010 73 33 label_xy 284 116
+end
+usecasecanvas 129413 usecase_ref 129925 // LogOnAdmin
+  xyzwh 385 260 3005 87 35 label_xy 400 269
+end
+usecasecanvas 130821 usecase_ref 130053 // ViewPlayer
+  xyzwh 288 66 3005 81 33 label_xy 302 74
+end
+usecasecanvas 131461 usecase_ref 130181 // ViewStat
+  xyzwh 455 97 3010 69 33 label_xy 467 106
+end
+classcanvas 131973 class_ref 128133 // Admin
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 527 156 2000
+end
+usecasecanvas 132869 usecase_ref 130309 // ViewPrivateMessages
+  xyzwh 129 354 3005 121 33 label_xy 138 361
+end
+usecasecanvas 132997 usecase_ref 130437 // SendPrivateMessage
+  xyzwh 335 379 3005 137 33 label_xy 354 387
+end
+usecasecanvas 133253 usecase_ref 130565 // InitateChat
+  xyzwh 250 247 3005 64 32 label_xy 255 254
+end
+usecasecanvas 133765 usecase_ref 130693 // AcceptPayement
+  xyzwh 396 324 3005 93 35 label_xy 401 332
+end
+classcanvas 134021 class_ref 128261 // Bank
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 527 247 2000
+end
+line 129541 ----
+  from ref 128005 z 3006 to ref 128133
+line 129669 ----
+  from ref 128005 z 3006 to ref 128261
+line 130053 ----
+  from ref 128005 z 3011 to ref 129285
+line 130181 ----
+  from ref 128005 z 3006 to ref 128901
+line 130309 ----
+  from ref 128005 z 3011 to ref 129157
+line 130437 ----
+  from ref 128005 z 3006 to ref 129029
+line 130565 ----
+  from ref 128005 z 3011 to ref 128645
+line 130693 ----
+  from ref 128005 z 3006 to ref 128773
+line 130949 ----
+  from ref 128005 z 3006 to ref 130821
+simplerelationcanvas 131077 simplerelation_ref 128005
+  from ref 128517 z 3006 to point 401 29
+  line 134789 z 3006 stereotype "<<extend>>" xyz 353 36 3000 to ref 130821
+end
+simplerelationcanvas 131589 simplerelation_ref 128389
+  from ref 131461 z 3011 stereotype "<<extend>>" xyz 383 97 3000 to ref 130821
+end
+simplerelationcanvas 131845 simplerelation_ref 128517
+  from ref 128389 z 3006 stereotype "<<extend>>" xyz 384 64 3000 to point 387 65
+  line 134661 z 3006 to ref 130821
+end
+line 132101 ----
+  from ref 131973 z 3006 to ref 129413
+line 132229 ----
+  from ref 131973 z 3006 to ref 130821
+line 132357 ----
+  from ref 131973 z 3011 to ref 129285
+line 132485 ----
+  from ref 131973 z 3006 to ref 128901
+line 132613 ----
+  from ref 131973 z 3006 to ref 129029
+line 132741 ----
+  from ref 131973 z 3011 to ref 129157
+line 133125 ----
+  from ref 128005 z 3006 to ref 132869
+line 133381 ----
+  from ref 128005 z 3006 to ref 133253
+line 133509 ----
+  from ref 131973 z 3006 to ref 133253
+simplerelationcanvas 133637 simplerelation_ref 128645
+  from ref 132997 z 3006 stereotype "<<extend>>" xyz 263 380 3000 to ref 132869
+end
+simplerelationcanvas 133893 simplerelation_ref 128773
+  from ref 133765 z 3011 stereotype "<<include>>" xyz 316 340 3000 to ref 128645
+end
+line 134149 ----
+  from ref 134021 z 3006 to ref 133765
+line 134277 ----
+  from ref 131973 z 3006 to ref 128773
+end

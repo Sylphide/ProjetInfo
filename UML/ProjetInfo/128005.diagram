@@ -1,0 +1,51 @@
+format 76
+
+classcanvas 128005 class_ref 128005 // Player
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 86 123 2000
+end
+usecasecanvas 128133 usecase_ref 128005 // LogOnPlayer
+  xyzwh 192 36 3005 71 33 label_xy 196 44
+end
+usecasecanvas 128261 usecase_ref 128133 // ManagePlayerAccount
+  xyzwh 201 87 3005 139 45 label_xy 216 101
+end
+usecasecanvas 128389 usecase_ref 128261 // ManageLobby
+  xyzwh 225 199 3005 83 33 label_xy 232 207
+end
+usecasecanvas 128517 usecase_ref 128389 // ManagePoints
+  xyzwh 227 145 3005 85 37 label_xy 236 156
+end
+usecasecanvas 128645 usecase_ref 128517 // ManagePlayers
+  xyzwh 199 307 3005 89 35 label_xy 207 316
+end
+usecasecanvas 128773 usecase_ref 128645 // Communication
+  xyzwh 198 256 3010 103 33 label_xy 212 263
+end
+classcanvas 128901 class_ref 128133 // Admin
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 397 220 2000
+end
+classcanvas 130949 class_ref 128261 // Bank
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 394 121 2000
+end
+line 129669 ----
+  from ref 128005 z 3006 to ref 128133
+line 129797 ----
+  from ref 128005 z 3006 to ref 128261
+line 130053 ----
+  from ref 128005 z 3011 to ref 128773
+line 130181 ----
+  from ref 128005 z 3006 to ref 128389
+line 130309 ----
+  from ref 128005 z 3006 to ref 128517
+line 130437 ----
+  from ref 128901 z 3011 to ref 128773
+line 130565 ----
+  from ref 128901 z 3006 to ref 128645
+line 130693 ----
+  from ref 128901 z 3006 to ref 128389
+line 131077 ----
+  from ref 130949 z 3006 to ref 128517
+end

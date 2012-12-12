@@ -1,0 +1,21 @@
+window_sizes 1366 716 320 960 607 35
+diagrams
+  usecasediagram_ref 128005 // SimpleUseCase
+    759 411 100 4 29 0
+  usecasediagram_ref 128133 // DetailedUseCase
+    531 585 100 4 0 65
+  active  classdiagram_ref 134661 // SimpleClassDiagram
+    500 585 100 4 0 98
+end
+show_stereotypes
+open
+  class_ref 134789 // Player
+  class_ref 134917 // Table
+  class_ref 135045 // Admin
+  class_ref 135173 // User
+  class_ref 135301 // Lobby
+  class_ref 135429 // Order
+  class_ref 135557 // Card
+  class_ref 135685 // Deck
+end
+end
