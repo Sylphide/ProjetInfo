@@ -1,7 +1,0 @@
-INDEX VERSION 1.122+C:\Users\Djib\Documents\CPE\Info\Projet\ProjetInfo\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-224440230.index
-2995820639.index
-702859714.index
-403961973.index
-2654034048.index
-2584282928.index
