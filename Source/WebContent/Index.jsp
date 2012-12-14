@@ -42,8 +42,8 @@
 	</ul>
 	
 	<ul style="color: red">
-		<% if(request.getAttribute("sender")!=null && request.getAttribute("sender").equals("index")) { %>
-             <li>La combinaison Pseudo/Mot de passe est incorrect</li>
+		<% if(request.getAttribute("errors")!=null) { %>
+             <li><%=request.getAttribute("errors")%></li>
      	<% }%>
 	</ul>
 	<fieldset id="center">
@@ -51,7 +51,7 @@
 	    <form action="/BeardMan/Controller" method="post">
 	        <p> 
 	        	<span class="formLabel">Login : </span>
-	        	<input type="text" name="name" value =""> 
+	        	<input type="text" name="nickName" value =""> 
 	        </p>
 	        <p> 
 	        	<span class="formLabel">Password :</span> 

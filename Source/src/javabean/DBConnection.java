@@ -19,7 +19,7 @@ public class DBConnection {
 		query=dbConnection.createStatement();
     }
     
-    //Insert a new entry table Users from the database localBase
+    //Insert a new entry in the table Users from the database localBase
     public ArrayList<String> createNewUser(String firstName, String lastName, String nickName, String password) throws SQLException{
     	ArrayList<String> errors=new ArrayList<String>();
     	sqlQuery="USE localBase;";
@@ -50,6 +50,22 @@ public class DBConnection {
 	    	query.executeUpdate(sqlQuery);
     	}
     	return errors;
+    		
+    }
+    
+    //Check nickName/password combination
+    public boolean checkPasswordCombination(String nickName, String password) throws SQLException{
+    	sqlQuery="USE localBase;";
+    	query.executeUpdate(sqlQuery);
+    	
+    	sqlQuery="SELECT * FROM Users WHERE nickName='"+nickName+"';";
+    	ResultSet rs = query.executeQuery(sqlQuery);
+    	
+    	while(rs.next()){
+    		if(rs.getString("password").equals(password))
+    			return true;
+    	}
+    	return false;
     		
     }
 }

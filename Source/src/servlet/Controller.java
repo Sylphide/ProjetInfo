@@ -53,10 +53,26 @@ public class Controller extends HttpServlet {
 		}
 		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Se connecter"))
 		{
-			
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
-	        rd.forward(request, response);
-	        return;
+			boolean success=false;
+			try {
+				success=dbConnection.checkPasswordCombination(request.getParameter("nickName"),request.getParameter("password"));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(success)
+			{
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
+		        rd.forward(request, response);
+		        return;
+			}
+			else
+			{
+				request.setAttribute("errors","La combinaison Pseudo/Mot de passe est incorrect");
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Index.jsp");
+		        rd.forward(request, response);
+		        return;
+			}
 		}
 		//Registration.jsp Buttons
 		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Retour"))
