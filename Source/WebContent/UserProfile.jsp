@@ -7,6 +7,9 @@
 <title>Votre Profil</title>
 </head>
 <body>
-	Test
+	<jsp:useBean id="user" class="javabean.UserInfo" scope="session"/>
+	<p style="color: blue">
+	Welcome <%= user.getNickName()%>!
+	</p>
 </body>
 </html>

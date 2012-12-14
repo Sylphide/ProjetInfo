@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javabean.DBConnection;
+import javabean.UserInfo;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Controller
@@ -44,6 +46,8 @@ public class Controller extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		HttpSession session = request.getSession();
+		
 		//Index.jsp Buttons
 		if(request.getParameter("button")!=null && request.getParameter("button").equals("Inscrivez-vous!"))
 		{
@@ -62,6 +66,9 @@ public class Controller extends HttpServlet {
 			}
 			if(success)
 			{
+				UserInfo user=new UserInfo();
+				user.setNickName(request.getParameter("nickName"));
+				session.setAttribute("user", user);
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
 		        rd.forward(request, response);
 		        return;

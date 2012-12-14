@@ -39,6 +39,8 @@ public class DBConnection {
     		errors.add("Prenom manquant");
     	if(lastName.equals(""))
     		errors.add("Nom manquant");
+    	if(nickName.equals(""))
+    		errors.add("Pseudo manquant");
     	if(password.equals(""))
     		errors.add("Mot de passe manquant");
     	

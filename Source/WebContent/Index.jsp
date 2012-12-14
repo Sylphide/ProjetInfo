@@ -31,6 +31,9 @@
     </style>
 </head>
 <body>
+	<div style="text-align:center;width=100%;">
+	<img src="C:/Banner.jpg" alt="Banniere test" width=100% height=40%/>
+	</div>
 	<p style="color: blue ">
               Bienvenue sur la plateforme de e-Barbu BeardMan!
     </p>
