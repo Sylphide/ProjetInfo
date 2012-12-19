@@ -29,6 +29,7 @@ public class Controller extends HttpServlet {
         // TODO Auto-generated constructor stub
     	dbConnection=new DBConnection();
     }
+    
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,6 +52,7 @@ public class Controller extends HttpServlet {
 		//Index.jsp Buttons
 		if(request.getParameter("button")!=null && request.getParameter("button").equals("Inscrivez-vous!"))
 		{
+			
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Registration.jsp");
 	        rd.forward(request, response);
 	        return;

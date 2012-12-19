@@ -6,6 +6,43 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Inscription</title>
+
+	<script language="javascript" type="text/javascript">  
+		var wsUri = "ws://localhost:8080/BeardMan/WebSocketConnection"; 
+		var output;  
+		function init() { 
+			output = document.getElementById("output"); 
+			testWebSocket(); 
+			}  
+		function testWebSocket() { 
+			if(window.WebSocket) {
+				websocket = new WebSocket(wsUri); 
+				websocket.onopen = function(evt) { onOpen(evt) };
+				websocket.onclose = function(evt) { onClose(evt) };
+				websocket.onmessage = function(evt) { onMessage(evt) }; 
+				websocket.onerror = function(evt) { onError(evt) };
+				} 
+			else {
+		        alert('Votre navigateur ne supporte pas les webSocket!');
+				}
+			
+		 	}
+		function onOpen(evt) { 
+			alert("Connection open ...");
+			alert("Envoie message au serveur");
+			websocket.send("Envoie message au serveur");
+			}
+		function onClose(evt) { 
+			alert("Connection close ...");
+			}
+		function onMessage(evt) { 
+			alert("Reception message cote client");
+			}
+		function onError(evt) {
+			console.log('WebSocket Error ' + evt.data);
+			}
+		window.addEventListener("load", init, false);  
+	</script>
 	<style type="text/css">
 		html,body{
 		height:100%;
@@ -32,6 +69,8 @@
     </style>
 </head>
 <body>
+ 	<h2>WebSocket Test</h2>  
+ 	<div id="output"></div>
 	<p style="color: blue ">
               Bienvenue sur la plateforme de e-Barbu BeardMan!
     </p>
