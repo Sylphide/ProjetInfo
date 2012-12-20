@@ -2,6 +2,7 @@ package javabean;
 
 public class UserInfo {
 	private String nickName;
+	private int currentTable;
 	
 	public UserInfo(){
 		
@@ -13,5 +14,13 @@ public class UserInfo {
 	
 	public void setNickName(String value){
 		nickName=value;
+	}
+	
+	public int getCurrentTable(){
+		return currentTable;
+	}
+	
+	public void setCurrentTable(int value){
+		currentTable=value;
 	}
 }

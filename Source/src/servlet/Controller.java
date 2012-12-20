@@ -115,7 +115,19 @@ public class Controller extends HttpServlet {
 		//UserProfile.jsp Buttons
 		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Table"))
 		{
+			UserInfo user=(UserInfo)session.getAttribute("user");
+			user.setCurrentTable(1);
+			session.setAttribute("user",user);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");
+	        rd.forward(request, response);
+	        return;
+		}
+		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Table2"))
+		{
+			UserInfo user=(UserInfo)session.getAttribute("user");
+			user.setCurrentTable(2);
+			session.setAttribute("user",user);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table2.jsp");
 	        rd.forward(request, response);
 	        return;
 		}

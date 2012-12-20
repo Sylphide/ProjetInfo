@@ -36,14 +36,20 @@ public class WebSocketConnection extends WebSocketServlet{
 	private final class InternalWebSocket extends MessageInbound {
 		
 		private HttpSession session;
+		private int currentTable;
 		
 		public InternalWebSocket(HttpServletRequest request){
 			session=request.getSession();
 		}
 		
+		public int getCurrentTable()
+		{
+			return currentTable;
+		}
 		
 		@Override
         protected void onOpen(WsOutbound outbound) {
+			currentTable=((UserInfo)session.getAttribute("user")).getCurrentTable();
             connections.add(this);
             String message = String.format("* %s %s",((UserInfo)session.getAttribute("user")).getNickName(), "has joined.");
 			broadcast(message);
@@ -65,9 +71,12 @@ public class WebSocketConnection extends WebSocketServlet{
 		private void broadcast(String message){
 			for (InternalWebSocket connection : connections) {
                 try {
-                    CharBuffer buffer = CharBuffer.wrap(message);
-                    connection.getWsOutbound().writeTextMessage(buffer);
-                    connection.getWsOutbound().flush();
+                	if(connection.getCurrentTable()==this.currentTable)
+                	{
+                		CharBuffer buffer = CharBuffer.wrap(message);
+                		connection.getWsOutbound().writeTextMessage(buffer);
+                		connection.getWsOutbound().flush();
+                	}
                 } catch (IOException ignore) {
                     // Ignore
                 }

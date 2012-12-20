@@ -26,6 +26,7 @@
 	    <legend>Asseyez-vous</legend>
 	    <form action="/BeardMan/Controller" method="post">
 	        <input name="button" type="submit" value="Table">
+	        <input name="button" type="submit" value="Table2">
 	    </form>
     </fieldset>
 </body>
