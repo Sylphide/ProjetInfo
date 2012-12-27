@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javabean.DBConnection;
+import javabean.Lobby;
 import javabean.UserInfo;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,6 +50,7 @@ public class Controller extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		HttpSession session = request.getSession();
+		ServletContext context = getServletConfig().getServletContext();
 		
 		//Index.jsp Buttons
 		if(request.getParameter("button")!=null && request.getParameter("button").equals("Inscrivez-vous!"))
@@ -113,21 +116,25 @@ public class Controller extends HttpServlet {
 	        return;
 		}
 		//UserProfile.jsp Buttons
-		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Table"))
+		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Creer une nouvelle table"))
 		{
-			UserInfo user=(UserInfo)session.getAttribute("user");
-			user.setCurrentTable(1);
-			session.setAttribute("user",user);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");
+			Lobby lobby;
+			if(context.getAttribute("lobby")!=null)
+				lobby=(Lobby)context.getAttribute("lobby");
+			else
+				lobby=new Lobby();
+			lobby.addTable();
+			context.setAttribute("lobby",lobby);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
 	        rd.forward(request, response);
 	        return;
 		}
-		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Table2"))
+		else if(request.getParameter("button")!=null && (request.getParameter("button").substring(0,5)).equals("Table"))
 		{
 			UserInfo user=(UserInfo)session.getAttribute("user");
-			user.setCurrentTable(2);
-			session.setAttribute("user",user);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table2.jsp");
+			user.setCurrentTable(Integer.parseInt(request.getParameter("tableId")));
+			session.setAttribute("user", user);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");
 	        rd.forward(request, response);
 	        return;
 		}
