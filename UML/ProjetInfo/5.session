@@ -1,11 +1,11 @@
-window_sizes 1366 716 320 960 607 35
+window_sizes 1362 716 320 960 607 35
 diagrams
   usecasediagram_ref 128005 // SimpleUseCase
     759 411 100 4 29 0
   usecasediagram_ref 128133 // DetailedUseCase
-    531 585 100 4 0 65
+    531 585 100 4 0 36
   active  classdiagram_ref 134661 // SimpleClassDiagram
-    1040 605 100 4 0 0
+    1040 605 100 4 144 0
 end
 show_stereotypes
 open
