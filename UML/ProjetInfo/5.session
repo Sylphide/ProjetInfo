@@ -5,7 +5,7 @@ diagrams
   usecasediagram_ref 128133 // DetailedUseCase
     531 585 100 4 0 65
   active  classdiagram_ref 134661 // SimpleClassDiagram
-    500 585 100 4 0 98
+    1040 605 100 4 0 0
 end
 show_stereotypes
 open
