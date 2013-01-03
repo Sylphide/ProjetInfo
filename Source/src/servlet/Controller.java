@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javabean.DBConnection;
 import javabean.Lobby;
+import javabean.Player;
+import javabean.Table;
 import javabean.UserInfo;
 
 import javax.servlet.RequestDispatcher;
@@ -130,7 +132,7 @@ public class Controller extends HttpServlet {
 	        return;
 		}
 		else if(request.getParameter("button")!=null && (request.getParameter("button").substring(0,5)).equals("Table"))
-		{
+		{			
 			UserInfo user=(UserInfo)session.getAttribute("user");
 			user.setCurrentTable(Integer.parseInt(request.getParameter("tableId")));
 			session.setAttribute("user", user);
