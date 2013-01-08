@@ -58,7 +58,7 @@ relationcanvas 129541 relation_ref 128645 // <composition>
   no_multiplicity_a no_multiplicity_b
 end
 relationcanvas 129669 relation_ref 128773 // <dependency>
-  from ref 128517 z 2001 stereotype "<<use>>" xyz 456 222 3000 to ref 128645
+  from ref 128517 z 2001 stereotype "<<use>>" xyz 456 224.5 3000 to ref 128645
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
 end

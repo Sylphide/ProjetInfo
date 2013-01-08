@@ -21,6 +21,49 @@
             margin-right : 50px;
             }
 </style>
+<script language="javascript" type="text/javascript">  
+		var wsUri = "ws://localhost:8080/BeardMan/ControllerWebSocket";  
+		function WebSocketInit() { 
+			if(window.WebSocket) {
+				webSocket = new WebSocket(wsUri); 
+				webSocket.onopen = function(evt) { onOpen(evt) };
+				webSocket.onclose = function(evt) { onClose(evt) };
+				webSocket.onmessage = function(evt) { onMessage(evt) }; 
+				webSocket.onerror = function(evt) { onError(evt) };
+				} 
+			else {
+		        alert('Votre navigateur ne supporte pas les webSocket!');
+				}
+			
+		 	}
+		function onOpen(evt) { 
+			}
+		function onClose(evt) { 
+			}
+		function onMessage(evt) {
+			var newForm=document.createElement('form');
+			var newButton=document.createElement('input');
+			var newHidden=document.createElement('hidden');
+			newHidden.name="tableId";
+			newHidden.type="hidden";
+			newHidden.value=evt.data;
+			newForm.appendChild(newHidden);
+			newButton.name="button";
+			newButton.type="submit";
+			newButton.value="Table n°"+evt.data;
+			newForm.appendChild(newButton);
+			document.getElementById("tables").appendChild(newForm);
+			}
+		function onError(evt) {
+			alert("Error during WebSocket connection");
+			}
+		
+		function createTable(){
+			webSocket.send("CreateTable");
+		}
+		
+		window.addEventListener("load", WebSocketInit, false);
+</script>
 </head>
 <body>
 	<%ServletContext context=getServletConfig().getServletContext();%>
@@ -30,19 +73,22 @@
 	</p>
 	<fieldset id="center">
 	    <legend>Asseyez-vous</legend>
+	    <div id="tables">
 	    <%Lobby lobby=(Lobby)context.getAttribute("lobby");
 	    if(lobby!=null){
 	    	int nbTables=lobby.getNumberOfTables();
 	    	for(int i=0; i<nbTables; i++)
 	    	{%>
+	    	
 	    	 <form action="/BeardMan/Controller" method="post">
 	    		<input name="tableId" type="hidden" value="<%=i%>">
 	    		<input name="button" type="submit" value="Table n°<%=i%>">
 	    	</form>
 	    	<%}
 	    }%>
+	    </div>
 	     <form action="/BeardMan/Controller" method="post">
-	        <input id="newTableButton" name="button" type="submit" value="Creer une nouvelle table">
+	        <input id="newTableButton" name="button" type="submit" value="Creer une nouvelle table" onclick="createTable()">
 	    </form>
     </fieldset>
 </body>

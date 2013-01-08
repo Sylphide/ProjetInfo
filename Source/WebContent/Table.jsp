@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="object.Card" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -76,7 +77,7 @@
         }
     </style>
 	<script language="javascript" type="text/javascript">  
-		var wsUri = "ws://localhost:8080/BeardMan/WebSocketConnection";  
+		var wsUri = "ws://localhost:8080/BeardMan/ChatWebSocket";  
 		function WebSocketInit() { 
 			if(window.WebSocket) {
 				websocket = new WebSocket(wsUri); 
@@ -139,13 +140,17 @@
 	</script>
 </head>
 <body>
+	<jsp:useBean id="player" class="javabean.Player" scope="session"/>
+	<div style="width:100%;text-align:center;}">
+		Table n°<%=player.getCurrentTable() %>
+	</div>
 	<div id="playerList">
 		PlayerList
 	</div>
 	<div id="table-container">
 		Table
 		<div id="table">
-		
+			
 		</div>
 	</div>
 	<div id="chat-container">
@@ -157,13 +162,14 @@
 	    </div>
     </div>	
 	<div id="hand">
+	
 		Hand
-		<%ArrayList<String> hand=new ArrayList<String>();
-		hand.add("AsCoeur");
-		hand.add("DameCarreau");
-		hand.add("SeptPique"); 
-		for(int i=0; i<hand.size(); i++){%>
-		<img class="cardInHand" id="<%=hand.get(i)%>" src="http://localhost:8080/BeardMan/Images/Cards/<%=hand.get(i)%>.jpg" onclick="playCard(this.id)">
+		<%ArrayList<Card> hand=player.getHand();
+		for(int i=0; i<hand.size(); i++){
+			String rank=hand.get(i).getRank().toString();
+			String suit=hand.get(i).getSuit().toString();
+		%>
+		<img class="cardInHand" id="<%=i%>" src="http://localhost:8080/BeardMan/Images/Cards/<%=rank+"_"+suit%>.jpg" onclick="playCard(this.id)">
 		<%}%>
 	</div>
 	

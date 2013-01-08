@@ -6,15 +6,15 @@ import object.Card.Suit;
 
 public class Deck {
 
-	private ArrayList<Card> Cards;
+	private ArrayList<Card> cards;
 	
 	public Deck() {
 		// TODO Auto-generated constructor stub
-		Cards=new ArrayList<Card>();
+		cards=new ArrayList<Card>();
 	}
 	
-	public Deck(int numberOfPlayer){
-		Cards=new ArrayList<Card>();
+	public void initializeDeck(int numberOfPlayer){
+		cards=new ArrayList<Card>();
 		for(Rank rank: Rank.values())
 		{
 			for(Suit suit: Suit.values())
@@ -24,22 +24,32 @@ public class Deck {
 					if(!(rank.equals(Rank.SEVEN) && (suit.equals(Suit.CLUBS) || suit.equals(Suit.SPADES))))
 					{
 						Card card=new Card(rank,suit);
-						Cards.add(card);	
+						cards.add(card);	
 					}
 				}
 				else //For now 2 or 4
 				{
 					Card card=new Card(rank,suit);
-					Cards.add(card);
+					cards.add(card);
 				}
 			}
 		}
 	}
 	
+	public boolean isEmpty(){
+		return cards.isEmpty();
+	}
+	
+	public Card removeCard(int index){
+		Card card=cards.get(index);
+		cards.remove(index);
+		return card;
+	}
+	
 	public void displayCards(){
-		for(int i=0; i<Cards.size(); i++)
+		for(int i=0; i<cards.size(); i++)
 		{
-			Card card = Cards.get(i);
+			Card card = cards.get(i);
 			System.out.println(card.getRank().toString() + card.getSuit().toString());
 		}
 	}

@@ -15,12 +15,17 @@ public class Lobby {
 		return tableList.size();
 	}
 	
-	public void addTable() {
+	public int addTable() {
 		Table newTable=new Table();
 		
 		//Parametre de la nouvelle table a seter
 		
 		tableList.add(newTable);
+		return tableList.size()-1; //Id of the new table
+	}
+	
+	public void addPlayerAtTable(Player player,int tableId){
+		tableList.get(tableId).addPlayer(player);
 	}
 
 }

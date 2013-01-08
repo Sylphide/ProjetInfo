@@ -16,12 +16,22 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>WebSocketConnection</display-name>
-    <servlet-name>WebSocketConnection</servlet-name>
-    <servlet-class>socket.WebSocketConnection</servlet-class>
+    <display-name>ChatWebSocket</display-name>
+    <servlet-name>ChatWebSocket</servlet-name>
+    <servlet-class>socket.ChatWebSocket</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>WebSocketConnection</servlet-name>
-    <url-pattern>/WebSocketConnection</url-pattern>
+    <servlet-name>ChatWebSocket</servlet-name>
+    <url-pattern>/ChatWebSocket</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ControllerWebSocket</display-name>
+    <servlet-name>ControllerWebSocket</servlet-name>
+    <servlet-class>socket.ControllerWebSocket</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ControllerWebSocket</servlet-name>
+    <url-pattern>/ControllerWebSocket</url-pattern>
   </servlet-mapping>
 </web-app>

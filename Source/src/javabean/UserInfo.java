@@ -1,8 +1,9 @@
 package javabean;
 
 public class UserInfo {
-	private String nickName;
-	private int currentTable;
+	protected String nickName;
+	protected int currentTable;
+	protected String role;
 	
 	public UserInfo(){
 		
@@ -22,5 +23,13 @@ public class UserInfo {
 	
 	public void setCurrentTable(int value){
 		currentTable=value;
+	}
+	
+	public String getRole(){
+		return role;
+	}
+	
+	public void setRole(String value){
+		role=value;
 	}
 }

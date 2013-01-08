@@ -1,6 +1,6 @@
 format 76
 "ProjetInfo"
-  revision 3
+  revision 4
   modified_by 5 "Djib"
 
 
@@ -1089,6 +1089,16 @@ ${members}}
       end
 
       attribute 130565 "Nickname"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 138117 "Role"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};

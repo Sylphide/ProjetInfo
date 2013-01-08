@@ -125,16 +125,27 @@ public class Controller extends HttpServlet {
 				lobby=(Lobby)context.getAttribute("lobby");
 			else
 				lobby=new Lobby();
-			lobby.addTable();
+			UserInfo user=(UserInfo)session.getAttribute("user");
+			int tableId=lobby.addTable();
+			user.setCurrentTable(tableId);
+			Player player=new Player(user);
+			lobby.addPlayerAtTable(player, tableId);
+			session.setAttribute("player", player);
+			session.setAttribute("user", user);
 			context.setAttribute("lobby",lobby);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");
 	        rd.forward(request, response);
 	        return;
 		}
 		else if(request.getParameter("button")!=null && (request.getParameter("button").substring(0,5)).equals("Table"))
-		{			
+		{	
+			Lobby lobby=(Lobby)context.getAttribute("lobby");
 			UserInfo user=(UserInfo)session.getAttribute("user");
-			user.setCurrentTable(Integer.parseInt(request.getParameter("tableId")));
+			int tableId=Integer.parseInt(request.getParameter("tableId"));
+			user.setCurrentTable(tableId);
+			Player player=new Player(user);
+			lobby.addPlayerAtTable(player, tableId);
+			session.setAttribute("player", player);
 			session.setAttribute("user", user);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");
 	        rd.forward(request, response);
