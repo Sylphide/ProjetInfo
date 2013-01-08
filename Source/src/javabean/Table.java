@@ -1,6 +1,7 @@
 package javabean;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import object.Card;
 import object.Deck;
@@ -45,11 +46,16 @@ public class Table {
 	public void deal(){
 		while(!deck.isEmpty())
 		{
-			int rand=0;
+			Random random=new Random();
+			int rand=random.nextInt(deck.deckSize());
 			Card card=deck.removeCard(rand);
 			players.get(currentPlayer).getCard(card);
 			currentPlayer=(currentPlayer+1)%players.size();
 		}
+	}
+	
+	public ArrayList<Card> getPlayerHand(int index){
+		return players.get(index).getHand();
 	}
 	
 	public Deck getDeck(){

@@ -46,6 +46,10 @@ public class Deck {
 		return card;
 	}
 	
+	public int deckSize(){
+		return cards.size();
+	}
+	
 	public void displayCards(){
 		for(int i=0; i<cards.size(); i++)
 		{

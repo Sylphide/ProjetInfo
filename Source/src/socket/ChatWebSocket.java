@@ -56,6 +56,11 @@ public class ChatWebSocket extends WebSocketServlet{
         }
 		
 		@Override
+        protected void onClose(int status) {
+			connections.remove(this);
+        }
+		
+		@Override
 		protected void onBinaryMessage(ByteBuffer message) throws IOException {
 			//this application does not expect binary data
 			throw new UnsupportedOperationException(

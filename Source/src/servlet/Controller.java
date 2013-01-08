@@ -129,7 +129,8 @@ public class Controller extends HttpServlet {
 			int tableId=lobby.addTable();
 			user.setCurrentTable(tableId);
 			Player player=new Player(user);
-			lobby.addPlayerAtTable(player, tableId);
+			Table table=lobby.getTable(tableId);
+			table.addPlayer(player);
 			session.setAttribute("player", player);
 			session.setAttribute("user", user);
 			context.setAttribute("lobby",lobby);
@@ -141,10 +142,12 @@ public class Controller extends HttpServlet {
 		{	
 			Lobby lobby=(Lobby)context.getAttribute("lobby");
 			UserInfo user=(UserInfo)session.getAttribute("user");
+			System.out.println(request.getParameter("tableId"));
 			int tableId=Integer.parseInt(request.getParameter("tableId"));
+			Table table=lobby.getTable(tableId);
 			user.setCurrentTable(tableId);
 			Player player=new Player(user);
-			lobby.addPlayerAtTable(player, tableId);
+			table.addPlayer(player);
 			session.setAttribute("player", player);
 			session.setAttribute("user", user);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");

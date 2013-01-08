@@ -24,8 +24,8 @@ public class Lobby {
 		return tableList.size()-1; //Id of the new table
 	}
 	
-	public void addPlayerAtTable(Player player,int tableId){
-		tableList.get(tableId).addPlayer(player);
+	public Table getTable(int tableId){
+		return tableList.get(tableId);
 	}
 
 }

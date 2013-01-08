@@ -77,40 +77,77 @@
         }
     </style>
 	<script language="javascript" type="text/javascript">  
-		var wsUri = "ws://localhost:8080/BeardMan/ChatWebSocket";  
-		function WebSocketInit() { 
+		var chatUri = "ws://localhost:8080/BeardMan/ChatWebSocket";  
+		function ChatWebSocketInit() { 
 			if(window.WebSocket) {
-				websocket = new WebSocket(wsUri); 
-				websocket.onopen = function(evt) { onOpen(evt) };
-				websocket.onclose = function(evt) { onClose(evt) };
-				websocket.onmessage = function(evt) { onMessage(evt) }; 
-				websocket.onerror = function(evt) { onError(evt) };
+				chatWebSocket = new WebSocket(chatUri); 
+				chatWebSocket.onopen = function(evt) { chatOnOpen(evt) };
+				chatWebSocket.onclose = function(evt) { chatOnClose(evt) };
+				chatWebSocket.onmessage = function(evt) { chatOnMessage(evt) }; 
+				chatWebSocket.onerror = function(evt) { chatOnError(evt) };
 				} 
 			else {
 		        alert('Votre navigateur ne supporte pas les webSocket!');
 				}
 			
 		 	}
-		function onOpen(evt) { 
+		function chatOnOpen(evt) { 
 			document.getElementById('chat').onkeydown = function(event) {
                 if (event.keyCode == 13) {
                 	var message = document.getElementById('chat').value;
                     if (message != '') {
-                        websocket.send(message);
+                    	chatWebSocket.send(message);
                         document.getElementById('chat').value = '';
                     	}
                 	}
             	};
 			}
-		function onClose(evt) { 
+		function chatOnClose(evt) { 
 			Console.log("Connection close ...");
 			}
-		function onMessage(evt) { 
+		function chatOnMessage(evt) { 
 			Console.log(evt.data);
 			}
-		function onError(evt) {
-			Console.log("Error during WebSocket connection");
+		function chatOnError(evt) {
+			Console.log("Error during ChatWebSocket connection");
 			}
+		
+		var controllerUri = "ws://localhost:8080/BeardMan/ControllerWebSocket";  
+		function ControllerWebSocketInit() { 
+			if(window.WebSocket) {
+				controllerWebSocket = new WebSocket(controllerUri);
+				controllerWebSocket.onopen = function(evt) { controllerOnOpen(evt) };
+				controllerWebSocket.onclose = function(evt) { controllerOnClose(evt) };
+				controllerWebSocket.onmessage = function(evt) { controllerOnMessage(evt) }; 
+				controllerWebSocket.onerror = function(evt) { controllerOnError(evt) };
+				} 
+			else {
+		        alert('Votre navigateur ne supporte pas les webSocket!');
+				}
+			
+		 	}
+		function controllerOnOpen(evt) { 
+			}
+		
+		function controllerOnClose(evt) { 
+			}
+		
+		function controllerOnMessage(evt) { 
+			var hand=evt.data.split(";");
+			for(var i=0; i<hand.length-1; i++){
+					var card=document.createElement('img');
+					card.className="cardInHand";
+					card.id=i;
+					card.src="http://localhost:8080/BeardMan/Images/Cards/"+hand[i]+".jpg";
+					card.onclick=function(){playCard(this.id);};
+					document.getElementById("hand").appendChild(card);					
+				}
+			}
+		
+		function controllerOnError(evt) {
+			Console.log("Error during ControllerWebSocket connection");
+			}
+		
 		
 		var Console = {};
 		Console.log = (function(message) {
@@ -124,19 +161,24 @@
             }
             console.scrollTop = console.scrollHeight;
         });
-		window.addEventListener("load", WebSocketInit, false);
+		window.addEventListener("load", ChatWebSocketInit, false);
+		window.addEventListener("load", ControllerWebSocketInit, false);
 		
 		function playCard(id) {
 			var hand=document.getElementById("hand");
 			var oldCard=document.getElementById(id);
 			hand.removeChild(oldCard);
 			var newImg=document.createElement('img');
-			newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+id+".jpg";
+			newImg.src=oldCard.src;
 			newImg.id=id;
 			newImg.className="cardOnTable";
 			var table=document.getElementById("table");
 			table.appendChild(newImg);
 			}
+		
+		function StartGame(){
+			controllerWebSocket.send("StartGame");
+		}
 	</script>
 </head>
 <body>
@@ -152,6 +194,7 @@
 		<div id="table">
 			
 		</div>
+		<input type="button" value="Lancer la partie" onclick="StartGame()">
 	</div>
 	<div id="chat-container">
 		<p>
@@ -162,15 +205,6 @@
 	    </div>
     </div>	
 	<div id="hand">
-	
-		Hand
-		<%ArrayList<Card> hand=player.getHand();
-		for(int i=0; i<hand.size(); i++){
-			String rank=hand.get(i).getRank().toString();
-			String suit=hand.get(i).getSuit().toString();
-		%>
-		<img class="cardInHand" id="<%=i%>" src="http://localhost:8080/BeardMan/Images/Cards/<%=rank+"_"+suit%>.jpg" onclick="playCard(this.id)">
-		<%}%>
 	</div>
 	
 </body>

@@ -42,18 +42,24 @@
 			}
 		function onMessage(evt) {
 			var newForm=document.createElement('form');
-			var newButton=document.createElement('input');
-			var newHidden=document.createElement('hidden');
+			newForm.action="/BeardMan/Controller";
+			newForm.method="post";
+			
+			var newHidden=document.createElement('input');
 			newHidden.name="tableId";
 			newHidden.type="hidden";
 			newHidden.value=evt.data;
 			newForm.appendChild(newHidden);
+			
+			var newButton=document.createElement('input');
 			newButton.name="button";
 			newButton.type="submit";
 			newButton.value="Table n°"+evt.data;
 			newForm.appendChild(newButton);
+			
 			document.getElementById("tables").appendChild(newForm);
 			}
+		
 		function onError(evt) {
 			alert("Error during WebSocket connection");
 			}
