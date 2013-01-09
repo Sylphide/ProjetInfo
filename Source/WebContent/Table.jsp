@@ -154,17 +154,39 @@
 				}
 			}
 			else if(response[0]=="PlayCard"){
-				var hand=document.getElementById("hand");
-				if(response[1]==response[3]){
-					var oldCard=document.getElementById(response[2]);
-					hand.removeChild(oldCard);
+				//PlayCard;Success;CurrentPlayer;cardName;
+				if(response[1]=="true"){
+					var hand=document.getElementById("hand");
+					if(response[2]=="true"){
+						var oldCard=document.getElementById(response[3]);
+						hand.removeChild(oldCard);
+					}
 				}
-				var newImg=document.createElement('img');
-				newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+response[2]+".jpg";;
-				newImg.id=response[2];
-				newImg.className="cardOnTable";
+				else
+					alert("vous ne pouvez pas jouer cette carte/ce n'est pas votre tour");
+				
+			}
+			else if(response[0]=="AddBoard"){
+				//AddBoard;CardName
 				var table=document.getElementById("table");
+				
+				var newImg=document.createElement('img');
+				newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+response[1]+".jpg";;
+				newImg.id=response[1];
+				newImg.className="cardOnTable";
+//					var newHidden=document.createElement('input');
+//					newHidden.type="hidden";
+//					newHidden.id="hidden"+response[3];
+//					newHidden.value=response[2];
+				
 				table.appendChild(newImg);
+//					table.appendChild(newHidden);
+			}
+			else if(response[0]=="ClearBoard"){
+				var table=document.getElementById("table");
+				while(table.firstChild){
+					table.removeChild(table.firstChild);
+					};
 			}
 			
 		}
