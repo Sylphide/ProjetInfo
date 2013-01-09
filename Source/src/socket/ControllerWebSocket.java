@@ -79,14 +79,14 @@ public class ControllerWebSocket extends WebSocketServlet{
 			if(formatedMessage.equals("CreateTable"))
 			{	
 				Lobby lobby;
-				String response="";
+				String response="CreateTable;";
 				if(context.getAttribute("lobby")!=null)
 				{
 					lobby=(Lobby)context.getAttribute("lobby");
-					response=String.valueOf(lobby.getNumberOfTables());
+					response+=String.valueOf(lobby.getNumberOfTables())+";";
 				}
 				else
-					response="0";
+					response+="0;";
 				
 				for (InternalWebSocket connection : connections) {
 	                try {
@@ -101,29 +101,43 @@ public class ControllerWebSocket extends WebSocketServlet{
 			}
 			else if(formatedMessage.equals("StartGame"))
 			{
-				String response="";
+				String response="StartGame;";
 				Lobby lobby=(Lobby)context.getAttribute("lobby");
 				Table table=lobby.getTable(currentTable);
-				table.startGame();
-				int playerIndex=0;
-				for (InternalWebSocket connection : connections) {
-	                try {
-	                	if(connection.getCurrentTable()==this.currentTable)
-	                	{
-	                		ArrayList<Card> hand=table.getPlayerHand(playerIndex);
-	                		for(int i=0; i<hand.size(); i++)
-	                			response+=hand.get(i).getRank()+"_"+hand.get(i).getSuit()+";";
-	                		System.out.println(response);
-	                		CharBuffer buffer = CharBuffer.wrap(response);
-	                		connection.getWsOutbound().writeTextMessage(buffer);
-	                		response="";
-	                		playerIndex++;
-	                	}
-	                } catch (IOException ignore) {
-	                    // Ignore
-	                }
-	            }
-		        return;
+				if(table.getNumberOfPlayer()<3 || table.getNumberOfPlayer()>5){
+					try {
+						response+="false;";
+						CharBuffer buffer = CharBuffer.wrap(response);
+						this.getWsOutbound().writeTextMessage(buffer);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return;
+				}
+				else{
+					response+="true;";
+					table.startGame();
+					int playerIndex=0;
+					for (InternalWebSocket connection : connections) {
+		                try {
+		                	if(connection.getCurrentTable()==this.currentTable)
+		                	{
+		                		ArrayList<Card> hand=table.getPlayerHand(playerIndex);
+		                		for(int i=0; i<hand.size(); i++)
+		                			response+=hand.get(i).getRank()+"_"+hand.get(i).getSuit()+";";
+		                		System.out.println(response);
+		                		CharBuffer buffer = CharBuffer.wrap(response);
+		                		connection.getWsOutbound().writeTextMessage(buffer);
+		                		response="StartGame;true;";
+		                		playerIndex++;
+		                	}
+		                } catch (IOException ignore) {
+		                    // Ignore
+		                }
+		            }
+			        return;
+				}
 			}
 		}
 	}

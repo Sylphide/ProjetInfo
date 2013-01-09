@@ -124,8 +124,8 @@
 			else {
 		        alert('Votre navigateur ne supporte pas les webSocket!');
 				}
-			
 		 	}
+		
 		function controllerOnOpen(evt) { 
 			}
 		
@@ -134,14 +134,26 @@
 		
 		function controllerOnMessage(evt) { 
 			var hand=evt.data.split(";");
-			for(var i=0; i<hand.length-1; i++){
-					var card=document.createElement('img');
-					card.className="cardInHand";
-					card.id=i;
-					card.src="http://localhost:8080/BeardMan/Images/Cards/"+hand[i]+".jpg";
-					card.onclick=function(){playCard(this.id);};
-					document.getElementById("hand").appendChild(card);					
+			if(hand[0]=="StartGame"){
+				if(hand[1]=="true"){
+					for(var i=2; i<hand.length-1; i++){
+						var card=document.createElement('img');
+						card.className="cardInHand";
+						card.id=i;
+						card.src="http://localhost:8080/BeardMan/Images/Cards/"+hand[i]+".jpg";
+						card.onclick=function(){playCard(this.id);};
+						document.getElementById("hand").appendChild(card);					
+					}
+					var tableContainer=document.getElementById("table-container");
+					var startGameButton=document.getElementById("startgame");
+					tableContainer.removeChild(startGameButton);
 				}
+				else{
+					alert("Il n'y a pas assez de joueur a la table");
+				}
+				
+			}
+			
 			}
 		
 		function controllerOnError(evt) {
@@ -194,7 +206,7 @@
 		<div id="table">
 			
 		</div>
-		<input type="button" value="Lancer la partie" onclick="StartGame()">
+		<input type="button" id="startgame" value="Lancer la partie" onclick="StartGame()">
 	</div>
 	<div id="chat-container">
 		<p>

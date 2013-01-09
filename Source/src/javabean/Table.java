@@ -54,6 +54,10 @@ public class Table {
 		}
 	}
 	
+	public int getNumberOfPlayer(){
+		return players.size();
+	}
+	
 	public ArrayList<Card> getPlayerHand(int index){
 		return players.get(index).getHand();
 	}
