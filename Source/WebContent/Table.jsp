@@ -133,15 +133,16 @@
 			}
 		
 		function controllerOnMessage(evt) { 
-			var hand=evt.data.split(";");
-			if(hand[0]=="StartGame"){
-				if(hand[1]=="true"){
-					for(var i=2; i<hand.length-1; i++){
+			var response=evt.data.split(";");
+			if(response[0]=="StartGame"){
+				//StartGame;Success;PlayerId;PlayerHand
+				if(response[1]=="true"){
+					for(var i=3; i<response.length-1; i++){
 						var card=document.createElement('img');
 						card.className="cardInHand";
-						card.id=i;
-						card.src="http://localhost:8080/BeardMan/Images/Cards/"+hand[i]+".jpg";
-						card.onclick=function(){playCard(this.id);};
+						card.id=response[i];
+						card.src="http://localhost:8080/BeardMan/Images/Cards/"+response[i]+".jpg";
+						card.onclick=function(){playCard(response[2],this.id);};
 						document.getElementById("hand").appendChild(card);					
 					}
 					var tableContainer=document.getElementById("table-container");
@@ -151,10 +152,22 @@
 				else{
 					alert("Il n'y a pas assez de joueur a la table");
 				}
-				
+			}
+			else if(response[0]=="PlayCard"){
+				var hand=document.getElementById("hand");
+				if(response[1]==response[3]){
+					var oldCard=document.getElementById(response[2]);
+					hand.removeChild(oldCard);
+				}
+				var newImg=document.createElement('img');
+				newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+response[2]+".jpg";;
+				newImg.id=response[2];
+				newImg.className="cardOnTable";
+				var table=document.getElementById("table");
+				table.appendChild(newImg);
 			}
 			
-			}
+		}
 		
 		function controllerOnError(evt) {
 			Console.log("Error during ControllerWebSocket connection");
@@ -176,17 +189,9 @@
 		window.addEventListener("load", ChatWebSocketInit, false);
 		window.addEventListener("load", ControllerWebSocketInit, false);
 		
-		function playCard(id) {
-			var hand=document.getElementById("hand");
-			var oldCard=document.getElementById(id);
-			hand.removeChild(oldCard);
-			var newImg=document.createElement('img');
-			newImg.src=oldCard.src;
-			newImg.id=id;
-			newImg.className="cardOnTable";
-			var table=document.getElementById("table");
-			table.appendChild(newImg);
-			}
+		function playCard(playerId,cardName) {
+			controllerWebSocket.send("PlayCard;"+playerId+";"+cardName+";");
+		}
 		
 		function StartGame(){
 			controllerWebSocket.send("StartGame");

@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import object.Card;
+import object.Card.Rank;
+import object.Card.Suit;
 
 import org.apache.catalina.websocket.MessageInbound;
 import org.apache.catalina.websocket.StreamInbound;
@@ -73,10 +75,9 @@ public class ControllerWebSocket extends WebSocketServlet{
 		 
 		@Override
 		protected void onTextMessage(CharBuffer message){
-			String formatedMessage=message.toString();
+			String[] formatedMessage=message.toString().split(";");
 			ServletContext context = getServletConfig().getServletContext();
-			System.out.println(formatedMessage);
-			if(formatedMessage.equals("CreateTable"))
+			if(formatedMessage[0].equals("CreateTable"))
 			{	
 				Lobby lobby;
 				String response="CreateTable;";
@@ -99,7 +100,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 	            }
 		        return;
 			}
-			else if(formatedMessage.equals("StartGame"))
+			else if(formatedMessage[0].equals("StartGame"))
 			{
 				String response="StartGame;";
 				Lobby lobby=(Lobby)context.getAttribute("lobby");
@@ -124,6 +125,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 		                	if(connection.getCurrentTable()==this.currentTable)
 		                	{
 		                		ArrayList<Card> hand=table.getPlayerHand(playerIndex);
+		                		response+=String.valueOf(playerIndex)+";";
 		                		for(int i=0; i<hand.size(); i++)
 		                			response+=hand.get(i).getRank()+"_"+hand.get(i).getSuit()+";";
 		                		System.out.println(response);
@@ -138,6 +140,39 @@ public class ControllerWebSocket extends WebSocketServlet{
 		            }
 			        return;
 				}
+			}
+			else if(formatedMessage[0].equals("PlayCard"))
+			{
+				String response="PlayCard;";
+				Lobby lobby=(Lobby)context.getAttribute("lobby");
+				Table table=lobby.getTable(currentTable);
+				
+				int playerId=Integer.parseInt(formatedMessage[1]);
+				String cardName=formatedMessage[2];
+				
+				response+=formatedMessage[1]+";"+cardName+";";
+				
+				String[] cardValues=cardName.split("_");
+				Card card=new Card(Rank.valueOf(cardValues[0]),Suit.valueOf(cardValues[1]));
+				table.getPlayerHand(playerId).remove(card);
+				int playerIndex=0;
+				for (InternalWebSocket connection : connections) {
+	                try {
+	                	if(connection.getCurrentTable()==this.currentTable)
+	                	{
+//	                		ArrayList<Card> hand=table.getPlayerHand(playerIndex);
+	                		response+=String.valueOf(playerIndex)+";";
+	                		System.out.println(response);
+	                		CharBuffer buffer = CharBuffer.wrap(response);
+	                		connection.getWsOutbound().writeTextMessage(buffer);
+	                		response="PlayCard;"+formatedMessage[1]+";"+cardName+";";
+	                		playerIndex++;
+	                	}
+	                } catch (IOException ignore) {
+	                    // Ignore
+	                }
+	            }
+		        return;
 			}
 		}
 	}
