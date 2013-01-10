@@ -8,10 +8,23 @@ import object.Card.Suit;
 public class Player extends UserInfo{
 
 	private ArrayList<Card> hand;
+	int points;
 	
 	public Player() {
 		// TODO Auto-generated constructor stub
 		hand=new ArrayList<Card>();
+	}
+	
+	public void setPoints(int value){
+		points=value;
+	}
+	
+	public int getPoints(){
+		return points;
+	}
+	
+	public void addPoints(int value){
+		points+=value;
 	}
 	
 	public Player(UserInfo user) {
@@ -47,6 +60,10 @@ public class Player extends UserInfo{
 	
 	public ArrayList<Card> getHand(){
 		return hand;
+	}
+	
+	public int getHandSize(){
+		return hand.size();
 	}
 	
 	public void displayHand(){
