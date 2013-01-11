@@ -23,6 +23,7 @@ public class Table {
 	private Round currentRound;
 	private boolean started;
 	private boolean endTurn;
+	private boolean append;
 	
 	
 	public Table() {
@@ -33,6 +34,7 @@ public class Table {
 		turnPoints=new ArrayList<Integer>();
 		started=false;
 		endTurn=false;
+		append=true;
 	}
 	
 	public boolean isGameStarted(){
@@ -41,6 +43,24 @@ public class Table {
 	
 	public void setStarted(boolean value){
 		started=value;
+	}
+	
+	public boolean isRoundReussite(){
+		if((getLeftCards()==30 && players.size()==3) || getLeftCards()==32)
+			return false;
+		else
+			return currentRound==Round.REUSSITE;
+	}
+	
+	public boolean isAppend(){
+		return append;
+	}
+	
+	public int getLeftCards(){
+		int leftCards=0;
+		for(Player player : players)
+			leftCards+=player.getHandSize();
+		return leftCards;
 	}
 	
 	public void addPlayer(Player player){
@@ -65,7 +85,7 @@ public class Table {
 		started=true;
 		turnStarter=0;
 		currentPlayer=turnStarter;
-		currentRound=Round.PLIS;
+		currentRound=Round.REUSSITE;
 	}
 	
 	public void initializeDeck(){
@@ -100,6 +120,15 @@ public class Table {
 		return endTurn;
 	}
 	
+	public void finalizePlayingCard(int playerId,Card card){
+		Player player=players.get(playerId);
+		board.add(card);
+		player.playCard(card);
+		currentPlayer=(currentPlayer+1)%players.size();
+		checkStatus();
+		displayAll();
+	}
+	
 	public boolean playCard(int playerId, Card card){
 		if(playerId==currentPlayer)
 		{
@@ -107,29 +136,58 @@ public class Table {
 			if(board.isEmpty())
 			{
 				endTurn=false;
-				board.add(card);
-				player.playCard(card);
-				currentPlayer=(currentPlayer+1)%players.size();
-				displayAll();
+				finalizePlayingCard(playerId,card);
 				return true;
 			}
 			else
 			{
-				if(card.getSuit()==board.get(0).getSuit() || !player.gotSuit(board.get(0).getSuit())){
-					board.add(card);
-					player.playCard(card);
-					currentPlayer=(currentPlayer+1)%players.size();
-					checkStatus();
-					displayAll();
-					return true;
-				}
-				else
+				if(isRoundReussite()){
+					int playerCardRank=card.getRank().ordinal();
+					for(Card boardCard : board){
+						int boardCardRank=boardCard.getRank().ordinal();
+						System.out.println(card.getRank().toString()+"_"+card.getSuit().toString()+","+boardCard.getRank()+"_"+boardCard.getSuit());
+						if(playerCardRank==boardCardRank-1 && card.getSuit()==boardCard.getSuit()){
+							append=false;
+							finalizePlayingCard(playerId,card);
+							while(!checkPlayability())
+								currentPlayer=(currentPlayer+1)%players.size();
+							return true;
+						}
+						else if(playerCardRank==boardCardRank+1 && card.getSuit()==boardCard.getSuit() || card.getRank()==board.get(0).getRank()){
+							append=true;
+							finalizePlayingCard(playerId,card);
+							while(!checkPlayability())
+								currentPlayer=(currentPlayer+1)%players.size();
+							return true;
+						}
+					}
 					return false;
+				}
+				else{
+					if(card.getSuit()==board.get(0).getSuit() || !player.gotSuit(board.get(0).getSuit())){
+						finalizePlayingCard(playerId,card);
+						return true;
+					}
+					else
+						return false;
+				}
 			}
 				
 		}
 		else
 			return false;
+	}
+	
+	public boolean checkPlayability(){
+		for(Card playerCard : players.get(currentPlayer).getHand()){
+			int playerCardRank=playerCard.getRank().ordinal();
+			for(Card boardCard : board){
+				int boardCardRank=boardCard.getRank().ordinal();
+				if((playerCardRank==boardCardRank-1 || playerCardRank==boardCardRank+1) && playerCard.getSuit()==boardCard.getSuit() || playerCard.getRank()==board.get(0).getRank())
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public void displayAll(){
@@ -152,20 +210,26 @@ public class Table {
 	}
 	
 	public boolean isBoardStarting(){
-		if(board.size()==1){
+		if(board.size()==1)
 			return true;
-		}
 		else
 			return false;
 	}
 	
 	public void checkStatus(){
-		if(board.size()==players.size()){
-			//PAUSE
-			attributePoints();
-			board.clear();
-			if(players.get(0).getHandSize()==0){
-				if(!currentRound.equals(Round.REUSSITE)){
+		if(currentRound==Round.REUSSITE){
+			int cardsLeft=getLeftCards();
+			if(cardsLeft==0){
+				attributePoints();
+			}
+		}
+		else{
+			if(board.size()==players.size()){
+				//PAUSE
+				attributePoints();
+				board.clear();
+				int cardsLeft=getLeftCards();
+				if(cardsLeft==0){
 					currentRound=Round.values()[currentRound.ordinal()+1];
 					for(int i=0; i<players.size(); i++){
 						players.get(i).addPoints(turnPoints.get(i));
@@ -175,9 +239,6 @@ public class Table {
 						System.out.println("Player "+i+": "+players.get(i).getPoints());
 					}
 					deal();
-				}
-				else{
-					
 				}
 			}
 		}
@@ -232,7 +293,7 @@ public class Table {
 					queenCount++;
 				
 				int numberOfPlayers=players.size();
-				int cardsLeft=players.get(0).getHandSize()*numberOfPlayers;
+				int cardsLeft=getLeftCards();
 				if((cardsLeft==30-numberOfPlayers && (numberOfPlayers==5 || numberOfPlayers==3)) || cardsLeft==32-numberOfPlayers || cardsLeft==0)
 					points+=20;
 				

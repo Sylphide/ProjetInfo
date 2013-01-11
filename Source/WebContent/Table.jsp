@@ -159,7 +159,7 @@
 				}
 			}
 			else if(response[0]=="PlayCard"){
-				//PlayCard;Success;CurrentPlayer;cardName;
+				//PlayCard;Success;CurrentPlayer;cardName;isEndTurn
 				if(response[1]=="true"){
 					var hand=document.getElementById("hand");
 					if(response[2]=="true"){
@@ -181,17 +181,32 @@
 				
 			}
 			else if(response[0]=="AddBoard"){
-				//AddBoard;CardName
-				var table=document.getElementById("table");
+				//AddBoard;CardName;isReussite;isAppend/nextCard;
+				
 				
 				var newImg=document.createElement('img');
 				newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+response[1]+".jpg";;
 				newImg.id=response[1];
 				newImg.className="cardOnTable";
-				table.appendChild(newImg);
+				if(response[2]=="true"){
+					var cardParameter=response[1].split("_");
+					var divSuit=document.getElementById(cardParameter[1]);
+					if(response[3]=="true")
+						divSuit.appendChild(newImg);
+					else{
+						var nextCard=document.getElementById(response[3]);
+						divSuit.insertBefore(newImg,nextCard);
+					}
+						
+				}
+				else{
+					var table=document.getElementById("regularRounds");
+					table.appendChild(newImg);
+				}
+				
 			}
 			else if(response[0]=="ClearBoard"){
-				var table=document.getElementById("table");
+				var table=document.getElementById("regularRounds");
 				while(table.firstChild){
 					table.removeChild(table.firstChild);
 					};
@@ -248,7 +263,18 @@
 	<div id="table-container">
 		Table
 		<div id="table">
-			
+			<div id="regularRounds">
+			</div>
+			<div id="reussite">
+				<div id="HEARTS">
+				</div>
+				<div id="CLUBS">
+				</div>
+				<div id="DIAMONDS">
+				</div>
+				<div id="SPADES">
+				</div>
+			</div>
 		</div>
 		<input type="button" id="startgame" value="Lancer la partie" onclick="StartGame()">
 		<form action="/BeardMan/Controller" id="exitTable" method="post">

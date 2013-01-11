@@ -226,6 +226,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 				String cardName=formatedMessage[2];
 				String[] cardValues=cardName.split("_");
 				Card card=new Card(Rank.valueOf(cardValues[0]),Suit.valueOf(cardValues[1]));
+				int nextRankId=card.getRank().ordinal()+1;
 				if(table.playCard(playerId, card))
 				{
 					int playerIndex=0;
@@ -247,13 +248,29 @@ public class ControllerWebSocket extends WebSocketServlet{
 		                		
 		                		if(table.isEndTurn())
 		                			response+="true;";
+		                		else
+		                			response+="false;";
 		                		
 		                		System.out.println(response);
 		                		buffer = CharBuffer.wrap(response);
 		                		connection.getWsOutbound().writeTextMessage(buffer);	                			
 		                		playerIndex++;
 		                		
-	                			buffer=CharBuffer.wrap("AddBoard;"+cardName+";");
+		                		response="AddBoard;"+cardName+";";
+		                		if(table.isRoundReussite()){
+		                			response+="true;";
+		                			if(table.isAppend())
+		                				response+="true;";
+		                			else{
+		                				card.setRank(Rank.values()[nextRankId]);
+		                				response+=card.getRank()+"_"+card.getSuit()+";";
+		                			}
+		                		}
+		                		else
+		                			response+="false;";
+		                		
+		                		System.out.println(response);
+	                			buffer=CharBuffer.wrap(response);
 	                			connection.getWsOutbound().writeTextMessage(buffer);
 		                	}
 		                } catch (IOException ignore) {
