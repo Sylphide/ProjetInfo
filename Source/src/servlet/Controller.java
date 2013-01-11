@@ -53,7 +53,6 @@ public class Controller extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		ServletContext context = getServletConfig().getServletContext();
-		
 		//Index.jsp Buttons
 		if(request.getParameter("button")!=null && request.getParameter("button").equals("Inscrivez-vous!"))
 		{
@@ -142,7 +141,6 @@ public class Controller extends HttpServlet {
 		{	
 			Lobby lobby=(Lobby)context.getAttribute("lobby");
 			UserInfo user=(UserInfo)session.getAttribute("user");
-			System.out.println(request.getParameter("tableId"));
 			int tableId=Integer.parseInt(request.getParameter("tableId"));
 			Table table=lobby.getTable(tableId);
 			user.setCurrentTable(tableId);
@@ -151,6 +149,20 @@ public class Controller extends HttpServlet {
 			session.setAttribute("player", player);
 			session.setAttribute("user", user);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Table.jsp");
+	        rd.forward(request, response);
+	        return;
+		}
+		else if(request.getParameter("hiddenExitTable")!=null && request.getParameter("hiddenExitTable").equals("ExitTable"))
+		{
+			Lobby lobby=(Lobby)context.getAttribute("lobby");
+			UserInfo user=(UserInfo)session.getAttribute("user");
+			int tableId=user.getCurrentTable();
+			request.setAttribute("exitTable", tableId);
+			Table table=lobby.getTable(tableId);
+			if(table.getNumberOfPlayer()==1)
+				request.setAttribute("removeTable", "true");
+			user.setCurrentTable(-1);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
 	        rd.forward(request, response);
 	        return;
 		}

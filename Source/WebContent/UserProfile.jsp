@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="javabean.Lobby" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,6 +47,7 @@
 				var newForm=document.createElement('form');
 				newForm.action="/BeardMan/Controller";
 				newForm.method="post";
+				newForm.id=response[1];
 				
 				var newHidden=document.createElement('input');
 				newHidden.name="tableId";
@@ -60,8 +62,13 @@
 				newForm.appendChild(newButton);
 				
 				document.getElementById("tables").appendChild(newForm);
-				}
 			}
+			else if(response[0]=="RemoveTable"){
+				var oldForm=document.getElementById(response[1]);
+				var tables=document.getElementById("tables");
+				tables.removeChild(oldForm);
+			}
+		}
 		
 		function onError(evt) {
 			alert("Error during WebSocket connection");
@@ -85,15 +92,19 @@
 	    <div id="tables">
 	    <%Lobby lobby=(Lobby)context.getAttribute("lobby");
 	    if(lobby!=null){
-	    	int nbTables=lobby.getNumberOfTables();
-	    	for(int i=0; i<nbTables; i++)
-	    	{%>
-	    	
-	    	 <form action="/BeardMan/Controller" method="post">
+	    	ArrayList<Integer> realTablesIds=lobby.getRealTablesIds();
+	    	int exitTable=-1;
+	    	if(request.getAttribute("exitTable")!=null && request.getAttribute("removeTable")!=null)
+	    		exitTable=Integer.parseInt(request.getAttribute("exitTable").toString());
+	    	for(Integer i : realTablesIds)
+	    	{
+	    		if(i!=exitTable){%>
+	    	 <form action="/BeardMan/Controller" id="<%=i%>" method="post">
 	    		<input name="tableId" type="hidden" value="<%=i%>">
 	    		<input name="button" type="submit" value="Table n°<%=i%>">
 	    	</form>
-	    	<%}
+	    		<%}
+	    	}
 	    }%>
 	    </div>
 	     <form action="/BeardMan/Controller" method="post">

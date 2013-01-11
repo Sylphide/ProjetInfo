@@ -6,7 +6,7 @@ public class UserInfo {
 	protected String role;
 	
 	public UserInfo(){
-		
+		currentTable=-1;
 	}
 	
 	public String getNickName(){

@@ -45,6 +45,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 		
 		private HttpSession session;
 		private int currentTable;
+		private int playerId;
 		
 		public InternalWebSocket(HttpServletRequest request){
 			session=request.getSession();
@@ -53,6 +54,10 @@ public class ControllerWebSocket extends WebSocketServlet{
 		public int getCurrentTable()
 		{
 			return currentTable;
+		}
+		
+		public void setPlayerId(int value){
+			playerId=value;
 		}
 		
 		@Override
@@ -64,6 +69,43 @@ public class ControllerWebSocket extends WebSocketServlet{
 		@Override
         protected void onClose(int status) {
 			connections.remove(this);
+			if(currentTable!=-1){
+				ServletContext context = getServletConfig().getServletContext();
+	            Lobby lobby=(Lobby)context.getAttribute("lobby");
+				Table table=lobby.getTable(currentTable);
+				table.removePlayer(playerId);
+				int newPlayerId=0;
+				for(InternalWebSocket connection : connections){
+					if(connection.getCurrentTable()==this.currentTable){
+						connection.setPlayerId(newPlayerId);
+						newPlayerId++;
+					}
+						
+				}
+				
+				if(table.isGameStarted() || table.getNumberOfPlayer()==0){
+					if(table.getNumberOfPlayer()==0)
+						lobby.removeTable(currentTable);
+					if(table.isGameStarted())
+						table.setStarted(false);
+					for (InternalWebSocket connection : connections) {
+						try {
+							if(connection.getCurrentTable()==this.currentTable)
+		                	{
+	                			CharBuffer buffer = CharBuffer.wrap("PlayerLeft;");
+		                		connection.getWsOutbound().writeTextMessage(buffer);
+		                	}
+							if(table.getNumberOfPlayer()==0){
+								System.out.println("RemoveTable;"+currentTable);
+								CharBuffer buffer = CharBuffer.wrap("RemoveTable;"+currentTable);
+		                		connection.getWsOutbound().writeTextMessage(buffer);
+							}
+						} catch (IOException ignore) {
+		                    // Ignore
+		                }
+		            }
+				}
+			}
         }
 		
 		@Override
@@ -85,7 +127,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 				if(context.getAttribute("lobby")!=null)
 				{
 					lobby=(Lobby)context.getAttribute("lobby");
-					response+=String.valueOf(lobby.getNumberOfTables())+";";
+					response+=String.valueOf(lobby.getCurrentTableIdCount()+1)+";";
 				}
 				else
 					response+="0;";
@@ -100,6 +142,11 @@ public class ControllerWebSocket extends WebSocketServlet{
 	                }
 	            }
 		        return;
+			}
+			else if(formatedMessage[0].equals("JoinGame")){
+	            Lobby lobby=(Lobby)context.getAttribute("lobby");
+				Table table=lobby.getTable(currentTable);
+				playerId=table.getNumberOfPlayer()-1;
 			}
 			else if(formatedMessage[0].equals("StartGame"))
 			{
@@ -123,6 +170,8 @@ public class ControllerWebSocket extends WebSocketServlet{
 					int playerIndex=0;
 					for (InternalWebSocket connection : connections) {
 		                try {
+		                	CharBuffer buffer = CharBuffer.wrap("RemoveTable;"+currentTable+";");
+	                		connection.getWsOutbound().writeTextMessage(buffer);
 		                	if(connection.getCurrentTable()==this.currentTable)
 		                	{
 		                		ArrayList<Card> hand=table.getPlayerHand(playerIndex);
@@ -130,7 +179,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 		                		for(int i=0; i<hand.size(); i++)
 		                			response+=hand.get(i).getRank()+"_"+hand.get(i).getSuit()+";";
 		                		System.out.println(response);
-		                		CharBuffer buffer = CharBuffer.wrap(response);
+		                		buffer = CharBuffer.wrap(response);
 		                		connection.getWsOutbound().writeTextMessage(buffer);
 		                		response="Deal;true;";
 		                		playerIndex++;

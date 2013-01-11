@@ -126,11 +126,12 @@
 				}
 		 	}
 		
-		function controllerOnOpen(evt) { 
-			}
+		function controllerOnOpen(evt) {
+			controllerWebSocket.send("JoinGame;");	
+		}
 		
 		function controllerOnClose(evt) { 
-			}
+		}
 		
 		function controllerOnMessage(evt) { 
 			var response=evt.data.split(";");
@@ -195,6 +196,11 @@
 					table.removeChild(table.firstChild);
 					};
 			}
+			else if(response[0]=="PlayerLeft"){
+				alert("Un des joueurs a quitte la partie. La partie est maintenant terminee");
+				var exitForm=document.getElementById("exitTable");
+				exitForm.submit();
+			}
 			
 		}
 		
@@ -245,6 +251,10 @@
 			
 		</div>
 		<input type="button" id="startgame" value="Lancer la partie" onclick="StartGame()">
+		<form action="/BeardMan/Controller" id="exitTable" method="post">
+			<input type="hidden" name="hiddenExitTable" value="ExitTable">
+			<input type="submit" name="button" value="Quitter la table">
+		</form>
 	</div>
 	<div id="chat-container">
 		<p>

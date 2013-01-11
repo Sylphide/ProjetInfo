@@ -35,6 +35,14 @@ public class Table {
 		endTurn=false;
 	}
 	
+	public boolean isGameStarted(){
+		return started;
+	}
+	
+	public void setStarted(boolean value){
+		started=value;
+	}
+	
 	public void addPlayer(Player player){
 		player.setPoints(0);
 		turnPoints.add(0);
@@ -44,6 +52,11 @@ public class Table {
 	public void removePlayer(Player player){
 		turnPoints.remove(0);
 		players.remove(player);
+	}
+	
+	public void removePlayer(int playerId){
+		turnPoints.remove(0);
+		players.remove(playerId);
 	}
 	
 	public void startGame(){
