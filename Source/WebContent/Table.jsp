@@ -134,7 +134,7 @@
 		
 		function controllerOnMessage(evt) { 
 			var response=evt.data.split(";");
-			if(response[0]=="StartGame"){
+			if(response[0]=="Deal"){
 				//StartGame;Success;PlayerId;PlayerHand
 				if(response[1]=="true"){
 					for(var i=3; i<response.length-1; i++){
@@ -147,7 +147,11 @@
 					}
 					var tableContainer=document.getElementById("table-container");
 					var startGameButton=document.getElementById("startgame");
-					tableContainer.removeChild(startGameButton);
+					if(startGameButton)
+						tableContainer.removeChild(startGameButton);
+					var nextTurnButton=document.getElementById("nextTurn");
+					if(nextTurnButton)
+						tableContainer.removeChild(nextTurnButton);
 				}
 				else{
 					alert("Il n'y a pas assez de joueur a la table");
@@ -160,6 +164,15 @@
 					if(response[2]=="true"){
 						var oldCard=document.getElementById(response[3]);
 						hand.removeChild(oldCard);
+					}
+					if(response[4]=="true"){
+						var nextTurnButton=document.createElement('input');
+						nextTurnButton.value="Tour suivant";
+						nextTurnButton.type="button";
+						nextTurnButton.id="nextTurn";
+						nextTurnButton.onclick=function(){nextTurn();};
+						var tableContainer=document.getElementById("table-container");
+						tableContainer.appendChild(nextTurnButton);
 					}
 				}
 				else
@@ -174,13 +187,7 @@
 				newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+response[1]+".jpg";;
 				newImg.id=response[1];
 				newImg.className="cardOnTable";
-//					var newHidden=document.createElement('input');
-//					newHidden.type="hidden";
-//					newHidden.id="hidden"+response[3];
-//					newHidden.value=response[2];
-				
 				table.appendChild(newImg);
-//					table.appendChild(newHidden);
 			}
 			else if(response[0]=="ClearBoard"){
 				var table=document.getElementById("table");
@@ -189,6 +196,10 @@
 					};
 			}
 			
+		}
+		
+		function nextTurn(){
+			controllerWebSocket.send("NextTurn");
 		}
 		
 		function controllerOnError(evt) {

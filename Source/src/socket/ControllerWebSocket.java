@@ -103,7 +103,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 			}
 			else if(formatedMessage[0].equals("StartGame"))
 			{
-				response="StartGame;";
+				response="Deal;";
 				Lobby lobby=(Lobby)context.getAttribute("lobby");
 				Table table=lobby.getTable(currentTable);
 				if(table.getNumberOfPlayer()<3 || table.getNumberOfPlayer()>5){
@@ -132,7 +132,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 		                		System.out.println(response);
 		                		CharBuffer buffer = CharBuffer.wrap(response);
 		                		connection.getWsOutbound().writeTextMessage(buffer);
-		                		response="StartGame;true;";
+		                		response="Deal;true;";
 		                		playerIndex++;
 		                	}
 		                } catch (IOException ignore) {
@@ -141,6 +141,32 @@ public class ControllerWebSocket extends WebSocketServlet{
 		            }
 			        return;
 				}
+			}
+			else if(formatedMessage[0].equals("NextTurn"))
+			{
+				response="Deal;true;";
+				Lobby lobby=(Lobby)context.getAttribute("lobby");
+				Table table=lobby.getTable(currentTable);
+				int playerIndex=0;
+				for (InternalWebSocket connection : connections) {
+	                try {
+	                	if(connection.getCurrentTable()==this.currentTable)
+	                	{
+	                		ArrayList<Card> hand=table.getPlayerHand(playerIndex);
+	                		response+=String.valueOf(playerIndex)+";";
+	                		for(int i=0; i<hand.size(); i++)
+	                			response+=hand.get(i).getRank()+"_"+hand.get(i).getSuit()+";";
+	                		System.out.println(response);
+	                		CharBuffer buffer = CharBuffer.wrap(response);
+	                		connection.getWsOutbound().writeTextMessage(buffer);
+	                		response="Deal;true;";
+	                		playerIndex++;
+	                	}
+	                } catch (IOException ignore) {
+	                    // Ignore
+	                }
+	            }
+		        return;
 			}
 			else if(formatedMessage[0].equals("PlayCard"))
 			{
@@ -169,6 +195,10 @@ public class ControllerWebSocket extends WebSocketServlet{
 		                			response="PlayCard;true;true;"+cardName+";";
 		                		else
 		                			response="PlayCard;true;false;"+cardName+";";
+		                		
+		                		if(table.isEndTurn())
+		                			response+="true;";
+		                		
 		                		System.out.println(response);
 		                		buffer = CharBuffer.wrap(response);
 		                		connection.getWsOutbound().writeTextMessage(buffer);	                			

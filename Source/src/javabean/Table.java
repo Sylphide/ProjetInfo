@@ -22,6 +22,7 @@ public class Table {
 	private int turnStarter;
 	private Round currentRound;
 	private boolean started;
+	private boolean endTurn;
 	
 	
 	public Table() {
@@ -31,6 +32,7 @@ public class Table {
 		board=new ArrayList<Card>();
 		turnPoints=new ArrayList<Integer>();
 		started=false;
+		endTurn=false;
 	}
 	
 	public void addPlayer(Player player){
@@ -81,12 +83,17 @@ public class Table {
 		return players.get(index).getHand();
 	}
 	
+	public boolean isEndTurn(){
+		return endTurn;
+	}
+	
 	public boolean playCard(int playerId, Card card){
 		if(playerId==currentPlayer)
 		{
 			Player player=players.get(playerId);
 			if(board.isEmpty())
 			{
+				endTurn=false;
 				board.add(card);
 				player.playCard(card);
 				currentPlayer=(currentPlayer+1)%players.size();
@@ -113,6 +120,7 @@ public class Table {
 	}
 	
 	public void displayAll(){
+		System.out.println(currentRound.toString());
 		for(Player player: players){
 			System.out.println("Player:");
 			player.displayHand();
@@ -147,8 +155,10 @@ public class Table {
 				if(!currentRound.equals(Round.REUSSITE)){
 					currentRound=Round.values()[currentRound.ordinal()+1];
 					for(int i=0; i<players.size(); i++){
-						players.get(i).setPoints(turnPoints.get(i));
+						players.get(i).addPoints(turnPoints.get(i));
 						turnPoints.set(i, 0);
+						currentPlayer=0;
+						endTurn=true;
 						System.out.println("Player "+i+": "+players.get(i).getPoints());
 					}
 					deal();
