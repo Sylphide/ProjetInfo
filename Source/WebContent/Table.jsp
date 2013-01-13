@@ -1,3 +1,5 @@
+<%@page import="quicktime.app.players.Playable"%>
+<%@page import="java.lang.reflect.Array"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.ArrayList" %>
@@ -158,8 +160,15 @@
 					alert("Il n'y a pas assez de joueur a la table");
 				}
 			}
+			else if(response[0] == "GetPlayer"){
+				var text = "Players List";
+				for(var i=1; i<response.length; i++){
+					text += response[i];
+				}
+				document.getElementById("playerList").innerHTML= text;
+			}
 			else if(response[0]=="PlayCard"){
-				//PlayCard;Success;CurrentPlayer;cardName;
+				//PlayCard;Success;CurrentPlayer;cardName;isEndTurn
 				if(response[1]=="true"){
 					var hand=document.getElementById("hand");
 					if(response[2]=="true"){
@@ -181,17 +190,32 @@
 				
 			}
 			else if(response[0]=="AddBoard"){
-				//AddBoard;CardName
-				var table=document.getElementById("table");
+				//AddBoard;CardName;isReussite;isAppend/nextCard;
+				
 				
 				var newImg=document.createElement('img');
 				newImg.src="http://localhost:8080/BeardMan/Images/Cards/"+response[1]+".jpg";;
 				newImg.id=response[1];
 				newImg.className="cardOnTable";
-				table.appendChild(newImg);
+				if(response[2]=="true"){
+					var cardParameter=response[1].split("_");
+					var divSuit=document.getElementById(cardParameter[1]);
+					if(response[3]=="true")
+						divSuit.appendChild(newImg);
+					else{
+						var nextCard=document.getElementById(response[3]);
+						divSuit.insertBefore(newImg,nextCard);
+					}
+						
+				}
+				else{
+					var table=document.getElementById("regularRounds");
+					table.appendChild(newImg);
+				}
+				
 			}
 			else if(response[0]=="ClearBoard"){
-				var table=document.getElementById("table");
+				var table=document.getElementById("regularRounds");
 				while(table.firstChild){
 					table.removeChild(table.firstChild);
 					};
@@ -235,20 +259,38 @@
 		function StartGame(){
 			controllerWebSocket.send("StartGame");
 		}
+		
+		function GetPlayer(){
+			controllerWebSocket.send("GetPlayer");
+		}
 	</script>
 </head>
-<body>
+<body >
 	<jsp:useBean id="player" class="javabean.Player" scope="session"/>
+	<jsp:useBean id="table" class="javabean.Table" scope="session" />
+    <% ArrayList<String>playersName = table.getPlayersName(); %>  
+    <% int i = 0; %>
 	<div style="width:100%;text-align:center;}">
 		Table n°<%=player.getCurrentTable() %>
 	</div>
 	<div id="playerList">
-		PlayerList
-	</div>
+		<input type="button" id="getPlayer" value="Get Player" onclick="GetPlayer()">
+	</div>	
 	<div id="table-container">
 		Table
 		<div id="table">
-			
+			<div id="regularRounds">
+			</div>
+			<div id="reussite">
+				<div id="HEARTS">
+				</div>
+				<div id="CLUBS">
+				</div>
+				<div id="DIAMONDS">
+				</div>
+				<div id="SPADES">
+				</div>
+			</div>
 		</div>
 		<input type="button" id="startgame" value="Lancer la partie" onclick="StartGame()">
 		<form action="/BeardMan/Controller" id="exitTable" method="post">

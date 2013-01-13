@@ -28,7 +28,7 @@ public class Controller extends HttpServlet {
 	DBConnection dbConnection;
     /**
      * Default constructor. 
-     */
+     */ 
     public Controller() throws ClassNotFoundException, SQLException{
         // TODO Auto-generated constructor stub
     	dbConnection=new DBConnection();
@@ -41,7 +41,7 @@ public class Controller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		RequestDispatcher dispatch = getServletContext().getRequestDispatcher("/Index.jsp");
+		RequestDispatcher dispatch = getServletContext().getRequestDispatcher("/Acceuil.jsp");
 		dispatch.forward(request, response);
 	}
 
@@ -91,7 +91,7 @@ public class Controller extends HttpServlet {
 		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Retour"))
 		{
 			
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Index.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Acceuil.jsp");
 	        rd.forward(request, response);
 	        return;
 		}
@@ -117,6 +117,16 @@ public class Controller extends HttpServlet {
 	        return;
 		}
 		//UserProfile.jsp Buttons
+		else if(request.getParameter("button")!= null && request.getParameter("button").equals("Disconnect"))
+		{
+		
+			request.getSession(false).invalidate();
+			request.setAttribute("errors","Vous vous êtes bien déconnecté");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Index.jsp");
+	        rd.forward(request, response);
+	      
+	        return;
+		}
 		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Creer une nouvelle table"))
 		{
 			Lobby lobby;
@@ -128,7 +138,7 @@ public class Controller extends HttpServlet {
 			int tableId=lobby.addTable();
 			user.setCurrentTable(tableId);
 			Player player=new Player(user);
-			Table table=lobby.getTable(tableId);
+			Table table=lobby.getTable(tableId); 
 			table.addPlayer(player);
 			session.setAttribute("player", player);
 			session.setAttribute("user", user);

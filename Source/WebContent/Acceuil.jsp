@@ -37,36 +37,26 @@
 	<div style="text-align:center;width=100%;">
 	<img src="http://localhost:8080/BeardMan/Images/Banner.jpg" alt="Banniere test" width=100% height=40%/>
 	</div>
-	<p style="color: blue ">
+	<p style="color: Black ">
               Bienvenue sur la plateforme de e-Barbu BeardMan!
     </p>
-      
-    <ul style="color: blue">
-		<%if(request.getAttribute("sender")!=null && request.getAttribute("sender").equals("registration")) { %>
-             <li>Votre inscription s'est déroulée avec succès!</li>
-     	<% }%>
-	</ul>
-	
-	<ul style="color: red">
-		<% if(request.getAttribute("errors")!=null) { %>
-             <li><%=request.getAttribute("errors")%></li>
-     	<% }%>
-	</ul>
-	<fieldset id="center">
-	    <legend>Connection</legend>
-	    <form action="/BeardMan/Controller" method="post">
-	        <p> 
-	        	<span class="formLabel">Login : </span>
-	        	<input type="text" name="nickName" value =""> 
-	        </p>
-	        <p> 
-	        	<span class="formLabel">Password :</span> 
-	        	<input type="password" name="password" value=""> 
-	        </p>
-	        <input id="connectionButton" name="button" type="submit" value="Se connecter">
+     <div style="text_align:center;border: 5px solid;margin:10px;">
+      Presentation:
+      </div>
+      <div style="text_align:center;border: 5px solid;margin:10px;">
+      Charte:
+      </div>
+       <div style="text_align:center;border: 2px solid; float:left;">
+       Si vous êtes nouveau et voulez vous inscrire, cliquez-ici :
+       <form action="/BeardMan/Controller" method="post">
 	        <input id="registrationButton" name="button" type="submit" value="Inscrivez-vous!">
-	         <input id="cancelButton" name="button" type="submit" value="Retour">
 	    </form>
-    </fieldset>
+      </div>
+       <div style="text_align:center;border: 2px solid;float:left;">
+       Si vous êtes déja inscrit, connectez-vous, cliquez-ici :
+       <form action="/BeardMan/Controller" method="post">
+		<input id="connectionButton" name="button" type="submit" value="Se connecter">
+	   </form>
+      </div>
 </body>
 </html>

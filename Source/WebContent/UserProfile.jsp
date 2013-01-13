@@ -84,9 +84,12 @@
 <body>
 	<%ServletContext context=getServletConfig().getServletContext();%>
 	<jsp:useBean id="user" class="javabean.UserInfo" scope="session"/>
-	<p style="color: blue">
+	<div style="color: blue">
 		Welcome <%= user.getNickName()%>!
-	</p>
+    <form action="/BeardMan/Controller" method="post">
+		<input id="Disconnect" name="button" type="submit" value="Disconnect">
+	</form>
+	</div>
 	<fieldset id="center">
 	    <legend>Asseyez-vous</legend>
 	    <div id="tables">
@@ -102,6 +105,7 @@
 	    	 <form action="/BeardMan/Controller" id="<%=i%>" method="post">
 	    		<input name="tableId" type="hidden" value="<%=i%>">
 	    		<input name="button" type="submit" value="Table n°<%=i%>">
+	    		
 	    	</form>
 	    		<%}
 	    	}
