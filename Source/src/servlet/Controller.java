@@ -27,11 +27,11 @@ public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DBConnection dbConnection;
     /**
-     * Default constructor. 
+     * Default constructor.   
      */ 
     public Controller() throws ClassNotFoundException, SQLException{
         // TODO Auto-generated constructor stub
-    	dbConnection=new DBConnection();
+    	dbConnection=new DBConnection(); 
     }
     
 

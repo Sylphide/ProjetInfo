@@ -37,9 +37,16 @@
         }
         
         #playerList {
-        	height:350px;
+        	height:100px;
         	float:left;
         	border:1px solid black;
+        	margin:2px;
+        }
+        #playerList2 {
+        	height:100px;
+        	float:left;
+        	border:1px solid black;
+        	margin:2px;
         }
         
         #table-container {
@@ -76,6 +83,12 @@
         	float:left;
         	border: 1px solid black;
             text-align:center;
+        }
+        #play{
+       		float:left;
+        }
+        #round{
+        	float:right;
         }
     </style>
 	<script language="javascript" type="text/javascript">  
@@ -130,6 +143,7 @@
 		
 		function controllerOnOpen(evt) {
 			controllerWebSocket.send("JoinGame;");	
+			controllerWebSocket.send("GetPlayer");
 		}
 		
 		function controllerOnClose(evt) { 
@@ -137,7 +151,23 @@
 		
 		function controllerOnMessage(evt) { 
 			var response=evt.data.split(";");
-			if(response[0]=="Deal"){
+			if(response[0]=="id"){
+				var text = "*C'est à ";
+				text+=response[1]+" de jouer";
+				document.getElementById("play").innerHTML= text;
+			}
+			else if(response[0]=="round"){
+				var text = "*Le round : "+response[1]+" est en cour!";
+				document.getElementById("round").innerHTML= text;
+			}
+			else if(response[0]=="points"){
+				var text= "Points :<br />";
+				for(var i = 1 ; i<= Math.floor((response.length-1)/2); i++){
+				  text += response[i]+ " : "+response[i+Math.floor((response.length-1)/2)]+"<br />";
+				}
+				document.getElementById("playerList2").innerHTML= text;
+			}
+			else if(response[0]=="Deal"){
 				//StartGame;Success;PlayerId;PlayerHand
 				if(response[1]=="true"){
 					for(var i=3; i<response.length-1; i++){
@@ -155,20 +185,22 @@
 					var nextTurnButton=document.getElementById("nextTurn");
 					if(nextTurnButton)
 						tableContainer.removeChild(nextTurnButton);
+					
 				}
 				else{
 					alert("Il n'y a pas assez de joueur a la table");
 				}
 			}
 			else if(response[0] == "GetPlayer"){
-				var text = "Players List";
+				var text = "PlayerList:<br /> ";
 				for(var i=1; i<response.length; i++){
-					text += response[i];
+					 text += response[i]+"<br />\n";
 				}
-				document.getElementById("playerList").innerHTML= text;
+				document.getElementById("playerList").innerHTML =  text;
 			}
 			else if(response[0]=="PlayCard"){
 				//PlayCard;Success;CurrentPlayer;cardName;isEndTurn
+				
 				if(response[1]=="true"){
 					var hand=document.getElementById("hand");
 					if(response[2]=="true"){
@@ -187,8 +219,10 @@
 				}
 				else
 					alert("vous ne pouvez pas jouer cette carte/ce n'est pas votre tour");
+					
 				
 			}
+			
 			else if(response[0]=="AddBoard"){
 				//AddBoard;CardName;isReussite;isAppend/nextCard;
 				
@@ -263,6 +297,7 @@
 		function GetPlayer(){
 			controllerWebSocket.send("GetPlayer");
 		}
+		
 	</script>
 </head>
 <body >
@@ -272,14 +307,29 @@
     <% int i = 0; %>
 	<div style="width:100%;text-align:center;}">
 		Table n°<%=player.getCurrentTable() %>
+		
 	</div>
 	<div id="playerList">
-		<input type="button" id="getPlayer" value="Get Player" onclick="GetPlayer()">
+	Players list:
 	</div>	
+	<div id="playerList2">
+	
+	</div>	
+	
+	<div id="play">
+	
+	</div>
+	
+	<div id="round">
+	
+	</div>
+	
 	<div id="table-container">
-		Table
+		
 		<div id="table">
+		
 			<div id="regularRounds">
+			
 			</div>
 			<div id="reussite">
 				<div id="HEARTS">

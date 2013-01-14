@@ -35,6 +35,7 @@ public class Table {
 		started=false;
 		endTurn=false;
 		append=true;
+		currentRound=Round.PLIS;
 	}
 	
 	public boolean isGameStarted(){
@@ -74,6 +75,10 @@ public class Table {
 		return playersName;
 	}
 	
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
 	
 	public void addPlayer(Player player){
 		player.setPoints(0);
@@ -91,6 +96,10 @@ public class Table {
 		players.remove(playerId);
 	}
 	
+	public String getPlayerByID(int Id){
+		return players.get(Id).getNickName();
+		
+	}
 	public void startGame(){
 		//A FAIRE TEST SUR DEMARRAGE ICI PLUTOT QUE CONTROLLERWEBSOCKET
 		deal();
@@ -338,5 +347,31 @@ public class Table {
 	
 	public Deck getDeck(){
 		return deck;
+	}
+	
+	public String getRound(){
+		
+			if(currentRound.equals(Round.PLIS)){
+				return "PLIS";
+			}
+			if(currentRound.equals(Round.COEURS)){
+				return "COEURS";
+			}
+			if(currentRound.equals(Round.BARBU)){
+				return "BARBU";
+			}
+			if(currentRound.equals(Round.PREMIERDERNIER)){
+				return "PREMIER-DERNIER";
+			}
+			if(currentRound.equals(Round.REUSSITE)){
+				return "REUSSITE";
+			}
+			if(currentRound.equals(Round.SALADE)){
+				return "SALADE";
+			}
+			
+			else{
+				return "DAMES";
+			}
 	}
 }
