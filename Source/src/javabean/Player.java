@@ -23,6 +23,7 @@ public class Player extends UserInfo{
 		return points;
 	}
 	
+	
 	public void addPoints(int value){
 		points+=value;
 	}

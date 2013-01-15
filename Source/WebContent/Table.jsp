@@ -90,6 +90,9 @@
         #round{
         	float:right;
         }
+        #butt{
+        	float:left;
+        	}
     </style>
 	<script language="javascript" type="text/javascript">  
 		var chatUri = "ws://localhost:8080/BeardMan/ChatWebSocket";  
@@ -178,7 +181,7 @@
 						card.onclick=function(){playCard(response[2],this.id);};
 						document.getElementById("hand").appendChild(card);					
 					}
-					var tableContainer=document.getElementById("table-container");
+					var tableContainer=document.getElementById("butt");
 					var startGameButton=document.getElementById("startgame");
 					if(startGameButton)
 						tableContainer.removeChild(startGameButton);
@@ -213,7 +216,7 @@
 						nextTurnButton.type="button";
 						nextTurnButton.id="nextTurn";
 						nextTurnButton.onclick=function(){nextTurn();};
-						var tableContainer=document.getElementById("table-container");
+						var tableContainer=document.getElementById("butt");
 						tableContainer.appendChild(nextTurnButton);
 					}
 				}
@@ -316,6 +319,13 @@
 	
 	</div>	
 	
+	<div id="butt">
+	<input type="button" id="startgame" value="Lancer la partie" onclick="StartGame()">
+		<form action="/BeardMan/Controller" id="exitTable" method="post">
+			<input type= "hidden" name="hiddenExitTable" value="ExitTable">
+			<input type="submit" name="button" value="Quitter la table">
+		</form>
+	</div>
 	<div id="play">
 	
 	</div>
@@ -342,11 +352,7 @@
 				</div>
 			</div>
 		</div>
-		<input type="button" id="startgame" value="Lancer la partie" onclick="StartGame()">
-		<form action="/BeardMan/Controller" id="exitTable" method="post">
-			<input type="hidden" name="hiddenExitTable" value="ExitTable">
-			<input type="submit" name="button" value="Quitter la table">
-		</form>
+		
 	</div>
 	<div id="chat-container">
 		<p>

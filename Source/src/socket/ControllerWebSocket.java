@@ -241,18 +241,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 				Lobby lobby=(Lobby)context.getAttribute("lobby");
 				Table table=lobby.getTable(currentTable);
 				int playerIndex=0;
-				for (InternalWebSocket connection : connections) {
-					
-	        		try {
-	        			response="id;"+table.getPlayerByID(playerId)+";";
-	        			System.out.println(response);
-	        			CharBuffer buffer = CharBuffer.wrap(response);
-						connection.getWsOutbound().writeTextMessage(buffer);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				
 				for (InternalWebSocket connection : connections) {
 					
 	        		try {
