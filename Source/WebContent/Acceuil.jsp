@@ -54,10 +54,12 @@
 	<img src="http://localhost:8080/BeardMan/Images/Banner.jpg" alt="Banniere test" width=100% height=40%/>
 	</div>
     <div id="textLabel100">
-      Presentation:
+      <p>Presentation:</p> 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum viverra nisi scelerisque pellentesque. Proin ac neque nec nibh gravida gravida eget id mi. Mauris urna mauris, venenatis vel pretium ut, dictum ac lorem. Morbi nisl leo, scelerisque nec mattis non, vulputate quis sapien. Maecenas eget nunc sem. Nulla ultricies convallis mattis. Cras porttitor tempus velit sed ultricies. Curabitur rutrum consectetur mi, id lobortis nisi fermentum fermentum. Mauris tincidunt feugiat lectus eget viverra. Sed consectetur varius libero, vel accumsan lectus bibendum ut. Duis neque tortor, laoreet et varius nec, bibendum eget nisi.
       </div>
      <div id="textLabel100">
-      Charte:
+      <p>Charte:</p> 
+      Suspendisse potenti. Morbi ante elit, blandit sed malesuada nec, porttitor sit amet tellus. Nulla fringilla nunc vitae leo rutrum pellentesque. Suspendisse potenti. Mauris lacus justo, auctor in semper et, tempus sit amet magna. Nam ut venenatis orci. Pellentesque mattis varius sapien, et accumsan tortor sagittis a. Sed sit amet augue in mi iaculis porttitor non ac nibh. Mauris eu enim erat.
       </div>
        <div id="textLabel50">
        Si vous êtes nouveau et voulez vous inscrire, cliquez-ici :
