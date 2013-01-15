@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Votre Profil</title>
+<title>Votre Profil & Lobby</title>
 <style type="text/css">
 		html,body{
 		height:100%;
@@ -67,6 +67,11 @@
 				var oldForm=document.getElementById(response[1]);
 				var tables=document.getElementById("tables");
 				tables.removeChild(oldForm);
+				if(response[2]=="true"){
+					var oldForm=document.getElementById(response[1]);
+					var tables=document.getElementById("tables");
+					tables.removeChild(oldForm);
+				}
 			}
 		}
 		
@@ -82,10 +87,13 @@
 </script>
 </head>
 <body>
+	<div style="text-align:center;width=100%; margin:5px; border:1px solid;">
+	<img src="http://localhost:8080/BeardMan/Images/Banner.jpg" alt="Banniere test" width=100% height=40%/>
+	</div>
 	<%ServletContext context=getServletConfig().getServletContext();%>
 	<jsp:useBean id="user" class="javabean.UserInfo" scope="session"/>
-	<div style="color: blue">
-		Welcome <%= user.getNickName()%>!
+	<div style="color: black">
+		Bienvenue sur le lobby <span style="color:red;"><b><%= user.getNickName()%> </b></span>. Veuillez rejoindre une table ou en créer une.
     <form action="/BeardMan/Controller" method="post">
 		<input id="Disconnect" name="button" type="submit" value="Disconnect">
 	</form>
@@ -101,7 +109,7 @@
 	    		exitTable=Integer.parseInt(request.getAttribute("exitTable").toString());
 	    	for(Integer i : realTablesIds)
 	    	{
-	    		if(i!=exitTable){%>
+	    		if(i!=exitTable && !lobby.getTable(i).isGameStarted()){%>
 	    	 <form action="/BeardMan/Controller" id="<%=i%>" method="post">
 	    		<input name="tableId" type="hidden" value="<%=i%>">
 	    		<input name="button" type="submit" value="Table n°<%=i%>">

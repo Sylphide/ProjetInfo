@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="Pragma" content="No-Cache" />
 <meta http-equiv="Expires" content="-1" />
-<title>BeardMan</title>
+<title>Interface de Connexion</title>
 	<style type="text/css">
 		html,body{
 		height:100%;
@@ -37,8 +37,8 @@
 	<div style="text-align:center;width=100%;">
 	<img src="http://localhost:8080/BeardMan/Images/Banner.jpg" alt="Banniere test" width=100% height=40%/>
 	</div>
-	<p style="color: blue ">
-              Bienvenue sur la plateforme de e-Barbu BeardMan!
+	<p style="color: black ">
+            <b>Veuillez entrer votre pseudo et mot de passe puis cliquer sur "Se connecter" afin d'accéder au lobby: </b>
     </p>
       
     <ul style="color: blue">

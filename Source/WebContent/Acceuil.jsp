@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="Pragma" content="No-Cache" />
 <meta http-equiv="Expires" content="-1" />
-<title>BeardMan</title>
+<title>Bienvenu sur la plateforme du BeardMan en Ligne!</title>
 	<style type="text/css">
 		html,body{
 		height:100%;
@@ -31,31 +31,44 @@
         	float: left;
             margin-left : 50px;
             }   
+        #textLabel100{
+        	text_align:center;
+        	float:left;
+        	margin:1px;
+        	border:2px solid;
+            width:100%;
+        	
+       }
+        #textLabel50{
+        	text_align:center;
+        	float:left;
+        	margin:1px;
+        	border:2px solid;
+        	
+        	
+       }
     </style>
 </head>
 <body>
-	<div style="text-align:center;width=100%;">
+	<div style="text-align:center;width=100%; margin:5px; border:1px solid;">
 	<img src="http://localhost:8080/BeardMan/Images/Banner.jpg" alt="Banniere test" width=100% height=40%/>
 	</div>
-	<p style="color: Black ">
-              Bienvenue sur la plateforme de e-Barbu BeardMan!
-    </p>
-     <div style="text_align:center;border: 5px solid;margin:10px;">
+    <div id="textLabel100">
       Presentation:
       </div>
-      <div style="text_align:center;border: 5px solid;margin:10px;">
+     <div id="textLabel100">
       Charte:
       </div>
-       <div style="text_align:center;border: 2px solid; float:left;">
+       <div id="textLabel50">
        Si vous êtes nouveau et voulez vous inscrire, cliquez-ici :
        <form action="/BeardMan/Controller" method="post">
 	        <input id="registrationButton" name="button" type="submit" value="Inscrivez-vous!">
 	    </form>
       </div>
-       <div style="text_align:center;border: 2px solid;float:left;">
+      <div id="textLabel50">
        Si vous êtes déja inscrit, connectez-vous, cliquez-ici :
        <form action="/BeardMan/Controller" method="post">
-		<input id="connectionButton" name="button" type="submit" value="Se connecter">
+		<input id="connectionButton" name="button" type="submit" value="Se connecter!">
 	   </form>
       </div>
 </body>

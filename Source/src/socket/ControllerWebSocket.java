@@ -132,7 +132,18 @@ public class ControllerWebSocket extends WebSocketServlet{
 				}
 				else
 					response+="0;";
-				
+				if(context.getAttribute("lobby")!=null)
+				{
+					lobby=(Lobby)context.getAttribute("lobby");
+					for(Integer j=0; j<lobby.getNumberOfTables();j++)
+	    			{
+	    				if(lobby.getTable(j).isGameStarted()==false){
+	    					response+="true;";
+	    				}
+	    				else
+	    					response+="false;";
+	    			}
+				}
 				for (InternalWebSocket connection : connections) {
 	                try {
 	                		System.out.println(response);
@@ -167,13 +178,17 @@ public class ControllerWebSocket extends WebSocketServlet{
 						e.printStackTrace();
 					}
 				}
+				
 				for (InternalWebSocket connection : connections) {
 					
 	        		try {
+	        			if(connection.getCurrentTable()==this.currentTable)
+	                	{
 	        			response="id;"+table.getPlayerByID(playerId)+";";
 	        			System.out.println(response);
 	        			CharBuffer buffer = CharBuffer.wrap(response);
 						connection.getWsOutbound().writeTextMessage(buffer);
+	                	}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -276,21 +291,7 @@ public class ControllerWebSocket extends WebSocketServlet{
 					}
 				}
 				
-				for (InternalWebSocket connection : connections) {
-					
-	        		try {
-	        			if(playerId+1 < table.getNumberOfPlayer()){
-	        			response="id;"+table.getPlayerByID(playerId+1)+";";
-	        			CharBuffer buffer = CharBuffer.wrap(response);
-						connection.getWsOutbound().writeTextMessage(buffer);
-	        			}else{
-	        				
-	        			}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				
 				response="Deal;true;";
 				
 				for (InternalWebSocket connection : connections) {
@@ -318,16 +319,19 @@ public class ControllerWebSocket extends WebSocketServlet{
 				response="GetPlayer;";
 				Lobby lobby=(Lobby)context.getAttribute("lobby");
 				Table table=lobby.getTable(currentTable);
+				
 				for(int i=0 ; i< table.getPlayersName().size();i++){
             		response+= table.getPlayersName().get(i)+";";
             		System.out.println(response);
             	}
 				for (InternalWebSocket connection : connections) {
 	                try {
+	                	if(connection.getCurrentTable()==this.currentTable)
+	                	{
 	                
 	                	CharBuffer buffer = CharBuffer.wrap(response);
                 		connection.getWsOutbound().writeTextMessage(buffer);
-	                	
+	                	}
 	                } catch (IOException ignore) {
 	                    // Ignore
 	                }

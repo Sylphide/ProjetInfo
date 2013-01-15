@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Inscription</title>
+<title>Formulaire d'Inscription</title>
 	<style type="text/css">
 		html,body{
 		height:100%;
@@ -32,8 +32,11 @@
     </style>
 </head>
 <body>
-	<p style="color: blue ">
-              Bienvenue sur la plateforme de e-Barbu BeardMan!
+	<div style="text-align:center;width=100%; margin:5px; border:1px solid;">
+	<img src="http://localhost:8080/BeardMan/Images/Banner.jpg" alt="Banniere test" width=100% height=40%/>
+	</div>
+	<p style="color: black ">
+             <b>Veuillez entrer les informations demandées puis cliquer sur "souscrire" afin de créer votre profil: </b>
     </p>
     
 	<ul style="color: red">

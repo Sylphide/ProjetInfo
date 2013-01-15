@@ -51,6 +51,9 @@ public class DBConnection {
 	    	System.out.println(sqlQuery);
 	    	query.executeUpdate(sqlQuery);
     	}
+    	else{	
+    		errors.add("Veuillez recommencer la démarche");
+    	}
     	return errors;
     		
     }

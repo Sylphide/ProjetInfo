@@ -61,6 +61,13 @@ public class Controller extends HttpServlet {
 	        rd.forward(request, response);
 	        return;
 		}
+		if(request.getParameter("button")!=null && request.getParameter("button").equals("Se connecter!"))
+		{
+			
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Index.jsp");
+	        rd.forward(request, response);
+	        return;
+		}
 		else if(request.getParameter("button")!=null && request.getParameter("button").equals("Se connecter"))
 		{
 			boolean success=false;
@@ -81,7 +88,7 @@ public class Controller extends HttpServlet {
 			}
 			else
 			{
-				request.setAttribute("errors","La combinaison Pseudo/Mot de passe est incorrect");
+				request.setAttribute("errors","La combinaison Pseudo/Mot de passe est incorrect, veuillez recommencer");
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Index.jsp");
 		        rd.forward(request, response);
 		        return;
