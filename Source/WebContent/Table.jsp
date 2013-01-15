@@ -37,13 +37,13 @@
         }
         
         #playerList {
-        	height:100px;
+        	height:auto;
         	float:left;
         	border:1px solid black;
         	margin:2px;
         }
         #playerList2 {
-        	height:100px;
+        	height:auto;
         	float:left;
         	border:1px solid black;
         	margin:2px;

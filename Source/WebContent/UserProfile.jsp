@@ -104,7 +104,7 @@
 	    		exitTable=Integer.parseInt(request.getAttribute("exitTable").toString());
 	    	for(Integer i : realTablesIds)
 	    	{
-	    		if(i!=exitTable && !lobby.getTable(i).isGameStarted() && !lobby.getTable(i).isFull()){%>
+	    		if(i!=exitTable && !lobby.getTable(i).isGameStarted() && lobby.getTable(i).getNumberOfPlayer()<5){%>
 	    	 <form action="/BeardMan/Controller" id="<%=i%>" method="post">
 	    		<input name="tableId" type="hidden" value="<%=i%>">
 	    		<input name="button" type="submit" value="Table n°<%=i%>">
