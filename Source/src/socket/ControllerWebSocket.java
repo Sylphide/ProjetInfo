@@ -81,7 +81,15 @@ public class ControllerWebSocket extends WebSocketServlet{
 						connection.setPlayerId(newPlayerId);
 						newPlayerId++;
 					}
-						
+					if(table.getNumberOfPlayer()==4){
+						CharBuffer buffer = CharBuffer.wrap("CreateTable;"+currentTable+";");
+                		try {
+							connection.getWsOutbound().writeTextMessage(buffer);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 				
 				if(table.isGameStarted() || table.getNumberOfPlayer()==0){

@@ -178,6 +178,8 @@ public class Controller extends HttpServlet {
 			Table table=lobby.getTable(tableId);
 			if(table.getNumberOfPlayer()==1)
 				request.setAttribute("removeTable", "true");
+			if(table.getNumberOfPlayer()==5)
+				request.setAttribute("exitFull", "true");
 			user.setCurrentTable(-1);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/UserProfile.jsp");
 	        rd.forward(request, response);
