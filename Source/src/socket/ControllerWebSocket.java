@@ -159,6 +159,18 @@ public class ControllerWebSocket extends WebSocketServlet{
 	            Lobby lobby=(Lobby)context.getAttribute("lobby");
 				Table table=lobby.getTable(currentTable);
 				playerId=table.getNumberOfPlayer()-1;
+				if(table.isFull()){
+					for (InternalWebSocket connection : connections) {
+		                try {
+			                	System.out.println("RemoveTable;"+currentTable);
+								CharBuffer buffer = CharBuffer.wrap("RemoveTable;"+currentTable);
+			            		connection.getWsOutbound().writeTextMessage(buffer);
+		                } catch (IOException ignore) {
+		                    // Ignore
+		                }
+		            }
+			        return;
+				}
 			}
 			else if(formatedMessage[0].equals("StartGame"))
 			{

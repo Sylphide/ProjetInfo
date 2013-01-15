@@ -57,6 +57,13 @@ public class Table {
 		return append;
 	}
 	
+	public boolean isFull(){
+		if(players.size()==5)
+			return true;
+		else
+			return false;
+	}
+	
 	public int getLeftCards(){
 		int leftCards=0;
 		for(Player player : players)

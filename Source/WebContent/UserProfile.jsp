@@ -67,11 +67,6 @@
 				var oldForm=document.getElementById(response[1]);
 				var tables=document.getElementById("tables");
 				tables.removeChild(oldForm);
-				if(response[2]=="true"){
-					var oldForm=document.getElementById(response[1]);
-					var tables=document.getElementById("tables");
-					tables.removeChild(oldForm);
-				}
 			}
 		}
 		
@@ -109,7 +104,7 @@
 	    		exitTable=Integer.parseInt(request.getAttribute("exitTable").toString());
 	    	for(Integer i : realTablesIds)
 	    	{
-	    		if(i!=exitTable && !lobby.getTable(i).isGameStarted()){%>
+	    		if(i!=exitTable && !lobby.getTable(i).isGameStarted() && !lobby.getTable(i).isFull()){%>
 	    	 <form action="/BeardMan/Controller" id="<%=i%>" method="post">
 	    		<input name="tableId" type="hidden" value="<%=i%>">
 	    		<input name="button" type="submit" value="Table n°<%=i%>">
