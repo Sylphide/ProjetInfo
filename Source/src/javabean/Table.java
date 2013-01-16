@@ -257,6 +257,7 @@ public class Table {
 				attributePoints();
 				board.clear();
 				int cardsLeft=getLeftCards();
+				currentPlayer=getTurnWinnerId();
 				if(cardsLeft==0){
 					currentRound=Round.values()[currentRound.ordinal()+1];
 					for(int i=0; i<players.size(); i++){
