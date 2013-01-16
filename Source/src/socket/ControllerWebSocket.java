@@ -204,10 +204,11 @@ public class ControllerWebSocket extends WebSocketServlet{
 	        		try {
 	        			if(connection.getCurrentTable()==this.currentTable)
 	                	{
-	        			response="id;"+table.getPlayerByID(playerId)+";";
-	        			System.out.println(response);
-	        			CharBuffer buffer = CharBuffer.wrap(response);
-						connection.getWsOutbound().writeTextMessage(buffer);
+	        				response="id;"+table.getPlayerByID(table.getCurrentPlayer())+";";
+	                		CharBuffer buffer = CharBuffer.wrap(response);
+							connection.getWsOutbound().writeTextMessage(buffer);
+	        			
+							System.out.println(response);
 	                	}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -369,21 +370,21 @@ public class ControllerWebSocket extends WebSocketServlet{
 					}
 				}
 				
-				for (InternalWebSocket connection : connections) {
-					
-	        		try {
-	        			if(playerId+1 < table.getNumberOfPlayer()){
-	        			response="id;"+table.getPlayerByID(playerId+1)+";";
-	        			CharBuffer buffer = CharBuffer.wrap(response);
-						connection.getWsOutbound().writeTextMessage(buffer);
-	        			}else{
-	        				
-	        			}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+//				for (InternalWebSocket connection : connections) {
+//					
+//	        		try {
+//	        			if(playerId+1 < table.getNumberOfPlayer()){
+//	        			response="id;"+table.getPlayerByID(playerId+1)+";";
+//	        			CharBuffer buffer = CharBuffer.wrap(response);
+//						connection.getWsOutbound().writeTextMessage(buffer);
+//	        			}else{
+//	        				
+//	        			}
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
 				
 				String cardName=formatedMessage[2];
 				String[] cardValues=cardName.split("_");
@@ -396,7 +397,10 @@ public class ControllerWebSocket extends WebSocketServlet{
 		                try {
 		                	if(connection.getCurrentTable()==this.currentTable)
 		                	{
-		                		CharBuffer buffer;
+		                		response="id;"+table.getPlayerByID(table.getCurrentPlayer())+";";
+		                		CharBuffer buffer = CharBuffer.wrap(response);
+								connection.getWsOutbound().writeTextMessage(buffer);
+		                		
 		                		if(table.isBoardStarting()){
 		                			System.out.println("Clear");
 		                			buffer=CharBuffer.wrap("ClearBoard;");
